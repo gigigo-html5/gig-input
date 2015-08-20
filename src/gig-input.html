@@ -26,7 +26,6 @@
             -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
             -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        @apply(--input-style);
         }
         input:focus {
             border-color: var(--input-border-color-focus, #62a8ea);
@@ -77,26 +76,6 @@
             font-size: 85%;
         }
 
-        .maxlength {
-            float: right;
-            border-radius: 3px;
-            margin: 5px 0;
-            color: white;
-            font-weight: bold;
-            padding: 2px 5px;
-            font-size: 75%;
-            display: block
-        }
-
-        .maxlength.success {
-            background-color: var(--input-color-success, #46BE8A);
-        }
-
-        .maxlength.error {
-            background-color: var(--input-color-error, #f96868);
-            color: white !important;
-        }
-
     </style>
 
     <template>
@@ -115,18 +94,11 @@
                type="{{typeFormat}}"
                value="{{value}}"
                class$="[[getClassList(errorMessage)]]"
-               on-keyup="keyupEvent"
-               on-focus="focusEvent"
-               on-blur="blurEvent">
+               on-keyup="keyupEvent">
 
         <template is="dom-if" if="[[errorMessage]]">
             <div class="error small">[[errorMessage]]</div>
         </template>
-
-        <template is="dom-if" if="{{maxLengthShow}}">
-            <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
-        </template>
-
     </template>
 
     <script>
@@ -140,12 +112,19 @@
                     this._checkType();
 
                 },
+                get inputElement() {
+                    return this.$.input;
+                },
                 getClassList: function(errorMessage) {
                     var classList = '';
 
                     if (errorMessage) {
                         classList += 'error';
                     }
+
+
+                    console.log(classList);
+
 
                     return classList;
                 },
@@ -155,47 +134,7 @@
                         case 'slug':
                             self.value = self._generatorSlug(self.$.input.value)
                             break;
-                        default:
-                            self.value = self.$.input.value;
-                            break;
                     }
-                    this._checkMaxLength();
-                },
-                focusEvent: function(e) {
-                    this._checkMaxLength();
-                },
-                blurEvent: function() {
-                    this.maxLengthShow = false;
-                },
-                length: function(value) {
-                    return value.length;
-                },
-                _checkMaxLength: function() {
-
-                    if (this.$.input.value && this.maxlength) {
-                        var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
-
-                        if (percentage > 70) {
-                            this.maxLengthShow = true;
-                        } else {
-                            this.maxLengthShow = false;
-                        }
-                    }
-
-                },
-                _getMaxLengthClass: function(value, maxlength) {
-
-                    var classList = 'maxlength';
-                    var percentage = ((value.length / maxlength) * 100).toFixed(2);
-
-                    if (percentage < 100) {
-                        classList += ' success';
-                    } else {
-                        classList += ' error';
-                    }
-
-                    return classList;
-
                 },
                 _generatorSlug: function(str) {
                     str = str.replace(/^\s+|\s+$/g, '');
@@ -249,13 +188,6 @@
                     typeFormat: {
                         type: String,
                         value: 'text',
-                        notify: true
-                    },
-                    maxlength: {
-                        type: Number
-                    },
-                    maxLengthShow: {
-                        type: Boolean,
                         notify: true
                     }
                 }
