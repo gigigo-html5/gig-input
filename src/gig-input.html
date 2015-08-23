@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
+
 
 <dom-module id="gig-input">
 
@@ -26,6 +28,7 @@
             -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
             -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            @apply(--input-style);
         }
         input:focus {
             border-color: var(--input-border-color-focus, #62a8ea);
@@ -76,9 +79,62 @@
             font-size: 85%;
         }
 
+        .maxlength {
+            float: right;
+            border-radius: 3px;
+            margin: 5px 0;
+            color: white;
+            font-weight: bold;
+            padding: 2px 5px;
+            font-size: 75%;
+            display: block
+        }
+
+        .maxlength.success {
+            background-color: var(--input-color-success, #46BE8A);
+        }
+
+        .maxlength.error {
+            background-color: var(--input-color-error, #f96868);
+            color: white !important;
+        }
+
+        .field-group {
+            display: -webkit-flex;
+            -webkit-align-items: center;
+            display: flex;
+            align-items: center;
+        }
+
+        .group-icon input {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .field-group span {
+            display: inline-block;
+            background-color: #f3f7f9;
+            border: 1px solid #e4eaec;
+            border-radius: 3px;
+            width: 1%;
+            white-space: nowrap;
+            vertical-align: middle;
+            color: #76838f;
+            font-size: 14px;
+            float: right;
+            width: 36px;
+            height: 36px;
+            text-align: center;
+            line-height: 34px;
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+            border-left: 0;
+        }
+
     </style>
 
     <template>
+        <div class="field-group" class$="[[getClassGroup(icon)]]">
         <input id="input"
                autocomplete$="[[autocomplete]]"
                required$="[[required]]"
@@ -94,11 +150,25 @@
                type="{{typeFormat}}"
                value="{{value}}"
                class$="[[getClassList(errorMessage)]]"
-               on-keyup="keyupEvent">
+               on-keyup="keyupEvent"
+               on-focus="focusEvent"
+               on-blur="blurEvent">
+
+               <template is="dom-if" if="[[icon]]">
+                   <span class$="[[getClassIcon(icon)]]"></span>
+               </template>
+
+
+        </div>
 
         <template is="dom-if" if="[[errorMessage]]">
             <div class="error small">[[errorMessage]]</div>
         </template>
+
+        <template is="dom-if" if="{{maxLengthShow}}">
+            <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
+        </template>
+
     </template>
 
     <script>
@@ -112,8 +182,17 @@
                     this._checkType();
 
                 },
-                get inputElement() {
-                    return this.$.input;
+                getClassGroup: function(icon) {
+                    var classList = 'field-group';
+
+                    if (icon) {
+                        classList += ' group-icon';
+                    }
+
+                    return classList;
+                },
+                getClassIcon: function(icon) {
+                    return 'fa '+icon;
                 },
                 getClassList: function(errorMessage) {
                     var classList = '';
@@ -121,10 +200,6 @@
                     if (errorMessage) {
                         classList += 'error';
                     }
-
-
-                    console.log(classList);
-
 
                     return classList;
                 },
@@ -134,7 +209,47 @@
                         case 'slug':
                             self.value = self._generatorSlug(self.$.input.value)
                             break;
+                        default:
+                            self.value = self.$.input.value;
+                        break;
                     }
+                    this._checkMaxLength();
+                },
+                focusEvent: function(e) {
+                    this._checkMaxLength();
+                },
+                blurEvent: function() {
+                    this.maxLengthShow = false;
+                },
+                length: function(value) {
+                    return value.length;
+                },
+                _checkMaxLength: function() {
+
+                    if (this.$.input.value && this.maxlength) {
+                        var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
+
+                        if (percentage > 70) {
+                            this.maxLengthShow = true;
+                        } else {
+                            this.maxLengthShow = false;
+                        }
+                    }
+
+                },
+                _getMaxLengthClass: function(value, maxlength) {
+
+                    var classList = 'maxlength';
+                    var percentage = ((value.length / maxlength) * 100).toFixed(2);
+
+                    if (percentage < 100) {
+                        classList += ' success';
+                    } else {
+                        classList += ' error';
+                    }
+
+                    return classList;
+
                 },
                 _generatorSlug: function(str) {
                     str = str.replace(/^\s+|\s+$/g, '');
@@ -189,6 +304,17 @@
                         type: String,
                         value: 'text',
                         notify: true
+                    },
+                    maxlength: {
+                        type: Number
+                    },
+                    maxLengthShow: {
+                        type: Boolean,
+                        notify: true
+                    },
+                    icon: {
+                        type: String,
+                        value: null
                     }
                 }
             })
