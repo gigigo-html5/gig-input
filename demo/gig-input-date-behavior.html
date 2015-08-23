@@ -1,0 +1,32 @@
+<link href="../bower_components/polymer/polymer.html">
+<script src="../bower_components/pikaday/pikaday.js"></script>
+<script src="../bower_components/moment/moment.js"></script>
+<link rel="stylesheet" href="../bower_components/pikaday/css/pikaday.css">
+
+
+<script>
+    Polymer.GigInputDateBehavior = {
+        enableDate: function() {
+            self = this;
+
+            var picker = new Pikaday({
+                field: this.$.input,
+                format: this.formatDate,
+                position: 'bottom left',
+                reposition: false,
+                onSelect: function (date) {
+                    self.$.input.value = moment(date).format(self.formatDate);
+                }
+            });
+
+        },
+        properties: {
+            formatDate: {
+                type: String,
+                value: 'DD/MM/YYYY',
+                notify: true
+            }
+        }
+
+    }
+</script>

@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="gig-input-date-behavior.html">
 <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
 
 
@@ -178,8 +179,15 @@
 
             Polymer({
                 is: 'gig-input',
+                behaviors: [
+                    Polymer.GigInputDateBehavior
+                ],
                 ready: function() {
                     this._checkType();
+
+                    if (this.type === 'date') {
+                        this.enableDate();
+                    }
 
                 },
                 getClassGroup: function(icon) {
@@ -268,9 +276,10 @@
                     return str;
                 },
                 _checkType: function() {
-                    if (this.type === 'slug') {
+                    if (this.type === 'slug' || this.type === 'date') {
                         this.typeFormat = 'text';
-                    } else {
+                    }
+                    else {
                         this.typeFormat = this.type;
                     }
                 },

@@ -9,12 +9,21 @@
     <link rel="import" href="/demo/gig-input.html">
 
     <style is="custom-style">
+        .field {
+            position:relative;
+            padding: 10px 0;
+        }
 
 
     </style>
 </head>
 <body>
-    <gig-input type="text" class="input" placeholder="Escribe un texto" maxlength="23"></gig-input>
+    <div class="field">
+        <gig-input type="text" class="input" placeholder="Escribe un texto" maxlength="23"></gig-input>
+    </div>
+    <div class="field">
+        <gig-input type="date"></gig-input>
+    </div>
 </body>
 
 </html>
