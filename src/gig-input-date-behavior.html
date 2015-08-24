@@ -1,0 +1,47 @@
+<link href="../polymer/polymer.html">
+<script src="../pikaday/pikaday.js"></script>
+<script src="../moment/moment.js"></script>
+<script src="../moment/locale/es.js"></script>
+<link rel="stylesheet" href="../pikaday/css/pikaday.css">
+
+
+<script>
+    Polymer.GigInputDateBehavior = {
+        enableDate: function() {
+            self = this;
+
+            moment.locale(self.lang);
+
+            var picker = new Pikaday({
+                field: this.$.input,
+                format: this.formatDate,
+                position: 'bottom left',
+                reposition: false,
+                minDate: this.minDate,
+                i18n: {
+                    previousMonth : 'Previous Month',
+                    nextMonth     : 'Next Month',
+                    months        : moment.localeData()._months,
+                    weekdays      : moment.localeData()._weekdays,
+                    weekdaysShort : moment.localeData()._weekdaysShort
+                },
+                onSelect: function (date) {
+                    self.$.input.value = moment(date).format(self.formatDate);
+                }
+            });
+
+        },
+        properties: {
+            formatDate: {
+                type: String,
+                value: 'DD/MM/YYYY',
+                notify: true
+            },
+            minDate: {
+                type: Date,
+                value: null
+            }
+        }
+
+    }
+</script>
