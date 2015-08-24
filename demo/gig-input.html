@@ -1,7 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="gig-input-date-behavior.html">
 <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
-
+<link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
 
 <dom-module id="gig-input">
 
@@ -180,8 +181,19 @@
             Polymer({
                 is: 'gig-input',
                 behaviors: [
-                    Polymer.GigInputDateBehavior
+                    Polymer.GigInputDateBehavior,
+                    Polymer.IronFormElementBehavior,
+                    Polymer.IronValidatableBehavior
                 ],
+                listeners: {
+                    'input': '_onInput'
+                },
+                _onInput: function() {
+                     this.value = this.$.input.value;
+                },
+                _getValidity: function() {
+                     return this.value != '';
+                },
                 ready: function() {
                     this._checkType();
                     if (this.type === 'date') {
