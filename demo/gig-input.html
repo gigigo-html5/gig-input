@@ -184,11 +184,9 @@
                 ],
                 ready: function() {
                     this._checkType();
-
                     if (this.type === 'date') {
                         this.enableDate();
                     }
-
                 },
                 getClassGroup: function(icon) {
                     var classList = 'field-group';
@@ -324,6 +322,11 @@
                     icon: {
                         type: String,
                         value: null
+                    },
+                    lang: {
+                        type: String,
+                        value: 'en',
+                        notify: true
                     }
                 }
             })

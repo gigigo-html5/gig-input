@@ -1,6 +1,7 @@
 <link href="../bower_components/polymer/polymer.html">
 <script src="../bower_components/pikaday/pikaday.js"></script>
 <script src="../bower_components/moment/moment.js"></script>
+<script src="../bower_components/moment/locale/es.js"></script>
 <link rel="stylesheet" href="../bower_components/pikaday/css/pikaday.css">
 
 
@@ -9,11 +10,21 @@
         enableDate: function() {
             self = this;
 
+            moment.locale(self.lang);
+
             var picker = new Pikaday({
                 field: this.$.input,
                 format: this.formatDate,
                 position: 'bottom left',
                 reposition: false,
+                minDate: this.minDate,
+                i18n: {
+                    previousMonth : 'Previous Month',
+                    nextMonth     : 'Next Month',
+                    months        : moment.localeData()._months,
+                    weekdays      : moment.localeData()._weekdays,
+                    weekdaysShort : moment.localeData()._weekdaysShort
+                },
                 onSelect: function (date) {
                     self.$.input.value = moment(date).format(self.formatDate);
                 }
@@ -25,6 +36,10 @@
                 type: String,
                 value: 'DD/MM/YYYY',
                 notify: true
+            },
+            minDate: {
+                type: Date,
+                value: null
             }
         }
 
