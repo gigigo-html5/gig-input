@@ -1,6 +1,6 @@
 <!--
  Webcomponents to manage and generate one slug. Returns value
- @version v0.0.1 - 2015-08-24
+ @version v0.0.5 - 2015-08-25
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -52,6 +52,7 @@
 
     }
 </script>
+
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="gig-input-date-behavior.html">
@@ -233,6 +234,11 @@
 
             var self;
 
+            function validateEmail(email) {
+                var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                return re.test(email);
+            }
+
             Polymer({
                 is: 'gig-input',
                 behaviors: [
@@ -245,15 +251,25 @@
                 },
                 _onInput: function() {
                      this.value = this.$.input.value;
+
+                     if (this._getValidity()) {
+                         this.errorMessage = null;
+                     }
                 },
                 _getValidity: function() {
-                     return this.value != '';
+                    if (this.type === 'email') {
+                        return validateEmail(this.value);
+                    } else {
+                        return this.value != '';
+                    }
                 },
                 ready: function() {
                     this._checkType();
                     if (this.type === 'date') {
                         this.enableDate();
                     }
+
+                    this._getValidity();
                 },
                 getClassGroup: function(icon) {
                     var classList = 'field-group';
@@ -355,6 +371,7 @@
                     },
                     value: {
                         type: String,
+                        value: '',
                         notify: true
                     },
                     required: {
