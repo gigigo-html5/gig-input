@@ -1,15 +1,15 @@
 <!--
  Webcomponents to manage and generate one slug. Returns value
- @version v0.0.5 - 2015-08-25
+ @version v0.0.6 - 2015-12-11
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
 <link href="../polymer/polymer.html">
-<script src="../pikaday/pikaday.js"></script>
+<script src="../pikaday-time/pikaday.js"></script>
 <script src="../moment/moment.js"></script>
 <script src="../moment/locale/es.js"></script>
-<link rel="stylesheet" href="../pikaday/css/pikaday.css">
+<link rel="stylesheet" href="../pikaday-time/css/pikaday.css">
 
 
 <script>
@@ -17,9 +17,17 @@
         enableDate: function() {
             self = this;
 
+            if (this.type == 'datetime') {
+                this.showTime = true;
+            } else {
+                this.showTime = false;
+            }
+
             moment.locale(self.lang);
 
             var picker = new Pikaday({
+                showTime: this.showTime,
+                use24hour: true,
                 field: this.$.input,
                 format: this.formatDate,
                 position: 'bottom left',
@@ -41,7 +49,6 @@
         properties: {
             formatDate: {
                 type: String,
-                value: 'DD/MM/YYYY',
                 notify: true
             },
             minDate: {
@@ -265,8 +272,8 @@
                 },
                 ready: function() {
                     this._checkType();
-                    if (this.type === 'date') {
-                        this.enableDate();
+                    if (this.type === 'date' || this.type === 'datetime') {
+                        this.enableDate(this.type);
                     }
 
                     this._getValidity();

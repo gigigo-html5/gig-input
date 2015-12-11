@@ -210,8 +210,8 @@
                 },
                 ready: function() {
                     this._checkType();
-                    if (this.type === 'date') {
-                        this.enableDate();
+                    if (this.type === 'date' || this.type === 'datetime') {
+                        this.enableDate(this.type);
                     }
 
                     this._getValidity();

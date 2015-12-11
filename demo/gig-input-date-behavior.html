@@ -1,8 +1,8 @@
 <link href="../bower_components/polymer/polymer.html">
-<script src="../bower_components/pikaday/pikaday.js"></script>
+<script src="../bower_components/pikaday-time/pikaday.js"></script>
 <script src="../bower_components/moment/moment.js"></script>
 <script src="../bower_components/moment/locale/es.js"></script>
-<link rel="stylesheet" href="../bower_components/pikaday/css/pikaday.css">
+<link rel="stylesheet" href="../bower_components/pikaday-time/css/pikaday.css">
 
 
 <script>
@@ -10,9 +10,17 @@
         enableDate: function() {
             self = this;
 
+            if (this.type == 'datetime') {
+                this.showTime = true;
+            } else {
+                this.showTime = false;
+            }
+
             moment.locale(self.lang);
 
             var picker = new Pikaday({
+                showTime: this.showTime,
+                use24hour: true,
                 field: this.$.input,
                 format: this.formatDate,
                 position: 'bottom left',
@@ -34,7 +42,6 @@
         properties: {
             formatDate: {
                 type: String,
-                value: 'DD/MM/YYYY',
                 notify: true
             },
             minDate: {
