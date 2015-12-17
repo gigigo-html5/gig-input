@@ -1,66 +1,10 @@
 <!--
  Webcomponents to manage and generate one slug. Returns value
- @version v0.0.8 - 2015-12-12
+ @version v0.0.9 - 2015-12-17
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
-<link href="../polymer/polymer.html">
-<script src="../pikaday-time/pikaday.js"></script>
-<script src="../moment/moment.js"></script>
-<script src="../moment/locale/es.js"></script>
-<link rel="stylesheet" href="../pikaday-time/css/pikaday.css">
-
-
-<script>
-    Polymer.GigInputDateBehavior = {
-        enableDate: function() {
-            self = this;
-
-            if (this.type == 'datetime') {
-                this.showTime = true;
-            } else {
-                this.showTime = false;
-            }
-
-            moment.locale(self.lang);
-
-            var picker = new Pikaday({
-                showTime: this.showTime,
-                use24hour: true,
-                field: this.$.input,
-                format: this.formatDate,
-                position: 'bottom left',
-                reposition: false,
-                minDate: this.minDate,
-                i18n: {
-                    previousMonth : 'Previous Month',
-                    nextMonth     : 'Next Month',
-                    months        : moment.localeData()._months,
-                    weekdays      : moment.localeData()._weekdays,
-                    weekdaysShort : moment.localeData()._weekdaysShort
-                },
-                onSelect: function (date) {
-                    self.$.input.value = moment(date).format(self.formatDate);
-                }
-            });
-
-        },
-        properties: {
-            formatDate: {
-                type: String,
-                notify: true
-            },
-            minDate: {
-                type: Date,
-                value: null
-            }
-        }
-
-    }
-</script>
-
-
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="gig-input-date-behavior.html">
 <link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
@@ -185,21 +129,32 @@
             border-top-right-radius: 0;
         }
 
+        .group input {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+
         .field-group span {
             display: inline-block;
             background-color: #f3f7f9;
             border: 1px solid #e4eaec;
             border-radius: 3px;
-            width: 1%;
             white-space: nowrap;
             vertical-align: middle;
             color: #76838f;
             font-size: 14px;
             float: right;
-            width: 36px;
             height: 36px;
             text-align: center;
             line-height: 34px;
+            border-right: 0;
+            padding: 0 10px;
+        }
+
+        .field-group span.icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
             border-bottom-left-radius: 0;
             border-top-left-radius: 0;
             border-left: 0;
@@ -208,7 +163,12 @@
     </style>
 
     <template>
-        <div class="field-group" class$="[[getClassGroup(icon)]]">
+        <div class="field-group" class$="[[getClassGroup(icon, group)]]">
+
+            <template is="dom-if" if="[[group]]">
+                <span>[[group]]</span>
+            </template>
+
         <input id="input"
                autocomplete$="[[autocomplete]]"
                required$="[[required]]"
@@ -231,7 +191,6 @@
                <template is="dom-if" if="[[icon]]">
                    <span class$="[[getClassIcon(icon)]]"></span>
                </template>
-
 
         </div>
 
@@ -287,17 +246,21 @@
 
                     this._getValidity();
                 },
-                getClassGroup: function(icon) {
+                getClassGroup: function(icon, group) {
                     var classList = 'field-group';
 
                     if (icon) {
                         classList += ' group-icon';
                     }
 
+                    if (group) {
+                        classList += ' group';
+                    }
+
                     return classList;
                 },
                 getClassIcon: function(icon) {
-                    return 'fa '+icon;
+                    return 'icon fa '+icon;
                 },
                 getClassList: function(errorMessage) {
                     var classList = '';

@@ -123,21 +123,32 @@
             border-top-right-radius: 0;
         }
 
+        .group input {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+
         .field-group span {
             display: inline-block;
             background-color: #f3f7f9;
             border: 1px solid #e4eaec;
             border-radius: 3px;
-            width: 1%;
             white-space: nowrap;
             vertical-align: middle;
             color: #76838f;
             font-size: 14px;
             float: right;
-            width: 36px;
             height: 36px;
             text-align: center;
             line-height: 34px;
+            border-right: 0;
+            padding: 0 10px;
+        }
+
+        .field-group span.icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
             border-bottom-left-radius: 0;
             border-top-left-radius: 0;
             border-left: 0;
@@ -146,7 +157,12 @@
     </style>
 
     <template>
-        <div class="field-group" class$="[[getClassGroup(icon)]]">
+        <div class="field-group" class$="[[getClassGroup(icon, group)]]">
+
+            <template is="dom-if" if="[[group]]">
+                <span>[[group]]</span>
+            </template>
+
         <input id="input"
                autocomplete$="[[autocomplete]]"
                required$="[[required]]"
@@ -169,7 +185,6 @@
                <template is="dom-if" if="[[icon]]">
                    <span class$="[[getClassIcon(icon)]]"></span>
                </template>
-
 
         </div>
 
@@ -225,17 +240,21 @@
 
                     this._getValidity();
                 },
-                getClassGroup: function(icon) {
+                getClassGroup: function(icon, group) {
                     var classList = 'field-group';
 
                     if (icon) {
                         classList += ' group-icon';
                     }
 
+                    if (group) {
+                        classList += ' group';
+                    }
+
                     return classList;
                 },
                 getClassIcon: function(icon) {
-                    return 'fa '+icon;
+                    return 'icon fa '+icon;
                 },
                 getClassList: function(errorMessage) {
                     var classList = '';

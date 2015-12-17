@@ -14,17 +14,38 @@
             padding: 10px 0;
         }
 
+        label {
+            font-family: sans-serif;
+            font-size: 14px;
+            display: block;
+            margin: 0 0 5px 0;
+        }
+
 
     </style>
 </head>
 <body>
     <div class="field">
+        <label>Input standard</label>
         <gig-input type="text" class="input" placeholder="Escribe un texto" maxlength="23" required></gig-input>
     </div>
 
     <div class="field">
+        <label>Input with date</label>
         <gig-input type="datetime" class="input" placeholder="Inserta una fecha" maxlength="23" required></gig-input>
     </div>
+
+    <div class="field">
+        <label>Input with icon</label>
+        <gig-input type="text" class="input" placeholder="Escribe un texto" required icon="fa-download"></gig-input>
+    </div>
+
+    <div class="field">
+        <label>Input group</label>
+        <gig-input type="url" class="input" placeholder="Escribe una url" required group="http://"></gig-input>
+    </div>
+
+
 </body>
 
 </html>
