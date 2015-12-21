@@ -1,0 +1,21 @@
+<link href="../polymer/polymer.html">
+<script src="colorpicker.js"></script>
+
+<script>
+    Polymer.GigInputColorBehavior = {
+        enableColor: function() {
+            var self = this;
+            var inputColor = jsColorPicker(this.$.input, {
+                customBG: this.$.input.value,
+                readOnly: this.readOnly,
+                appendTo: this,
+                input: this.$.input,
+                displayCallback: function(e, i, elem) {
+                    self.value = self.$.input.value;
+                }
+            });
+
+        }
+
+    }
+</script>

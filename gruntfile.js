@@ -110,7 +110,19 @@ module.exports = function(grunt) {
                 src: ['*'],
                 dest: ''
           },
-        }
+      },
+      uglify: {
+          options: {
+              mangle: true
+          },
+          dist: {
+              files: [{
+                       expand: true,
+                       src: 'colorpicker.js',
+                       dest: ''
+                   }]
+          }
+      }
     });
 
     // Load the plugin that provides the "jshint" task.
@@ -127,6 +139,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-release');
     grunt.loadNpmTasks('grunt-conventional-changelog');
     grunt.loadNpmTasks('grunt-vulcanize');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('stage', 'git add files before running the release task', function () {
         var files = this.options().files;
@@ -146,7 +159,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test-server', ['karma:server']);
 
     // Build task.
-    grunt.registerTask('build', ['copy', 'concat']);
+    grunt.registerTask('build', ['copy', 'concat', 'uglify']);
 
     // release task
     grunt.registerTask('release', ['build']);
