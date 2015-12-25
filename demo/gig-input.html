@@ -1,5 +1,6 @@
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="gig-input-date-behavior.html">
 <link rel="import" href="gig-input-color-behavior.html">
 <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
@@ -168,6 +169,10 @@
             cursor: pointer;
         }
 
+        iron-overlay-backdrop {
+            z-index: 1000;
+        }
+
     </style>
 
     <template>
@@ -206,6 +211,14 @@
 
         </div>
 
+        <template is="dom-if" if="[[checkColor(type)]]" on-dom-change="readyTemplate" id="color">
+            <div class="modal-color cp-default" hidden$="{{!showColor}}">
+                <div class="picker"></div>
+                <div class="slide"></div>
+            </div>
+
+        </template>
+
         <template is="dom-if" if="[[errorMessage]]">
             <div class="error small">[[errorMessage]]</div>
         </template>
@@ -213,6 +226,8 @@
         <template is="dom-if" if="{{maxLengthShow}}">
             <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
         </template>
+
+        <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
 
     </template>
 
@@ -254,15 +269,17 @@
                 focusInput: function() {
                     this.$.input.focus();
                 },
+                readyTemplate: function() {
+                    if (this.type === 'color') {
+                        this.enableColor();
+                    }
+                },
                 ready: function() {
                     this._checkType();
                     if (this.type === 'date' || this.type === 'datetime') {
                         this.enableDate(this.type);
                     }
 
-                    if (this.type === 'color') {
-                        this.enableColor();
-                    }
 
                     this._getValidity();
                 },
@@ -310,6 +327,10 @@
                 },
                 focusEvent: function(e) {
                     this._checkMaxLength();
+
+                    if (this.type === 'color') {
+                        this.showColor = true;
+                    }
                 },
                 blurEvent: function() {
                     this.maxLengthShow = false;
@@ -420,6 +441,10 @@
                     group: {
                         type: String,
                         value: null
+                    },
+                    showColor: {
+                        type: Boolean,
+                        value: false
                     }
                 }
             })
