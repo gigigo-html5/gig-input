@@ -1,9 +1,16 @@
+<!--
+ Webcomponents to manage input
+ @version v0.0.10 - 2015-12-25
+ @link https://github.com/gigigo-html5/gig-input
+ @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
+ @license MIT License, http://www.opensource.org/licenses/MIT
+ -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="gig-input-date-behavior.html">
 <link rel="import" href="gig-input-color-behavior.html">
-<link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
+<link rel="stylesheet" href="../bower_components/omponents-font-awesome/css/font-awesome.css">
 <link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
@@ -24,7 +31,7 @@
             font-family: Roboto,sans-serif;
         }
 
-        input {
+        input, label {
             display: block;
             width: 100%;
             height: 36px;
@@ -195,7 +202,7 @@
                name$="[[name]]"
                readonly$="[[readonly]]"
                type="{{typeFormat}}"
-               value="[[value]]"
+               value="{{value}}"
                class$="[[getClassList(errorMessage)]]"
                on-keyup="keyupEvent"
                on-focus="focusEvent"
@@ -253,7 +260,6 @@
                     'input': '_onInput'
                 },
                 _onInput: function() {
-                     this.value = this.$.input.value;
 
                      if (this._getValidity()) {
                          this.errorMessage = null;
@@ -389,6 +395,11 @@
                         this.typeFormat = this.type;
                     }
                 },
+                changeValue: function(value) {
+                    if (this.type == 'slug') {
+                        this.value = this._generatorSlug(value);
+                    }
+                },
                 properties: {
                     name: {
                         type: String,
@@ -398,7 +409,8 @@
                         type: String,
                         value: '',
                         notify: true,
-                        reflectToAttribute: true
+                        reflectToAttribute: true,
+                        observer: 'changeValue'
                     },
                     required: {
                         type: Boolean,
