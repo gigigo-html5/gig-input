@@ -1,6 +1,6 @@
 {
   "name": "gig-input",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Webcomponents to manage input",
   "main": "gruntfile.js",
   "scripts": {

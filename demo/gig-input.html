@@ -1,26 +1,14 @@
-<!--
- Webcomponents to manage input
- @version v0.0.10 - 2015-12-25
- @link https://github.com/gigigo-html5/gig-input
- @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
- @license MIT License, http://www.opensource.org/licenses/MIT
- -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
-<link rel="import" href="gig-input-date-behavior.html">
-<link rel="import" href="gig-input-color-behavior.html">
-<link rel="stylesheet" href="../bower_components/omponents-font-awesome/css/font-awesome.css">
-<link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
-<link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
-<script>
-  WebFont.load({
-    google: {
-      families: ['Roboto:300,400']
-    }
-  });
-</script>
+
+ <link rel="import" href="../bower_components/polymer/polymer.html">
+ <link rel="import" href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
+ <link rel="import" href="gig-input-date-behavior.html">
+ <link rel="import" href="gig-input-color-behavior.html">
+ <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
+ <link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
+ <link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
+ <link rel="stylesheet" href="../bower_components/font-roboto/dist/styles/roboto.min.css">
+
 
 <dom-module id="gig-input">
 
@@ -31,7 +19,7 @@
             font-family: Roboto,sans-serif;
         }
 
-        input, label {
+        input {
             display: block;
             width: 100%;
             height: 36px;
@@ -120,6 +108,26 @@
             color: white !important;
         }
 
+        .minlength {
+            float: left;
+            border-radius: 3px;
+            margin: 5px 0;
+            color: white;
+            font-weight: bold;
+            padding: 2px 5px;
+            font-size: 75%;
+            display: block
+        }
+
+        .minlength.success {
+            background-color: var(--input-color-success, #46BE8A);
+        }
+
+        .minlength.error {
+            background-color: var(--input-color-error, #f96868);
+            color: white !important;
+        }
+
         .field-group {
             display: -webkit-flex;
             -webkit-align-items: center;
@@ -203,7 +211,7 @@
                name$="[[name]]"
                readonly$="[[readonly]]"
                type="{{typeFormat}}"
-               value="{{value}}"
+               value="[[value]]"
                class$="[[getClassList(errorMessage)]]"
                on-keyup="keyupEvent"
                on-focus="focusEvent"
@@ -235,6 +243,10 @@
             <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
         </template>
 
+        <template is="dom-if" if="{{minLengthShow}}">
+            <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
+        </template>
+
         <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
 
     </template>
@@ -261,7 +273,6 @@
                     'input': '_onInput'
                 },
                 _onInput: function() {
-
                      if (this._getValidity()) {
                          this.errorMessage = null;
                      }
@@ -331,9 +342,11 @@
                         break;
                     }
                     this._checkMaxLength();
+                    this._checkMinLength();
                 },
                 focusEvent: function(e) {
                     this._checkMaxLength();
+                    this._checkMinLength();
 
                     if (this.type === 'color') {
                         this.showColor = true;
@@ -358,6 +371,18 @@
                     }
 
                 },
+                _checkMinLength: function() {
+
+                    if (this.$.input.value && this.minlength) {
+
+                        if (this.$.input.value.length < this.minlength + 2) {
+                            this.minLengthShow = true;
+                        } else {
+                            this.minLengthShow = false;
+                        }
+                    }
+
+                },
                 _getMaxLengthClass: function(value, maxlength) {
 
                     var classList = 'maxlength';
@@ -371,6 +396,18 @@
 
                     return classList;
 
+                },
+                _getMinLengthClass: function(value, minlength) {
+
+                    var classList = 'minlength';
+
+                    if (this.$.input.value.length < this.minlength) {
+                        classList += ' error';
+                    } else {
+                        classList += ' success';
+                    }
+
+                    return classList;
                 },
                 _generatorSlug: function(str) {
                     str = str.replace(/^\s+|\s+$/g, '');
@@ -396,11 +433,6 @@
                         this.typeFormat = this.type;
                     }
                 },
-                changeValue: function(value) {
-                    if (this.type == 'slug') {
-                        this.value = this._generatorSlug(value);
-                    }
-                },
                 properties: {
                     name: {
                         type: String,
@@ -411,8 +443,7 @@
                         type: String,
                         value: '',
                         notify: true,
-                        reflectToAttribute: true,
-                        observer: 'changeValue'
+                        reflectToAttribute: true
                     },
                     required: {
                         type: Boolean,
@@ -446,6 +477,13 @@
                         type: Number
                     },
                     maxLengthShow: {
+                        type: Boolean,
+                        notify: true
+                    },
+                    minlength: {
+                        type: Number
+                    },
+                    minLengthShow: {
                         type: Boolean,
                         notify: true
                     },

@@ -1,10 +1,11 @@
 <!--
  Webcomponents to manage input
- @version v0.0.10 - 2016-01-13
+ @version v0.0.11 - 2016-01-13
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
+
 
  <link rel="import" href="../polymer/polymer.html">
  <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
@@ -13,16 +14,9 @@
  <link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
  <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
  <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
- <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
- <script>
-   WebFont.load({
-     google: {
-       families: ['Roboto:300,400']
-     }
-   });
- </script>
+ <link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
 
- 
+
 <dom-module id="gig-input">
 
     <style>
@@ -117,6 +111,26 @@
         }
 
         .maxlength.error {
+            background-color: var(--input-color-error, #f96868);
+            color: white !important;
+        }
+
+        .minlength {
+            float: left;
+            border-radius: 3px;
+            margin: 5px 0;
+            color: white;
+            font-weight: bold;
+            padding: 2px 5px;
+            font-size: 75%;
+            display: block
+        }
+
+        .minlength.success {
+            background-color: var(--input-color-success, #46BE8A);
+        }
+
+        .minlength.error {
             background-color: var(--input-color-error, #f96868);
             color: white !important;
         }
@@ -236,6 +250,10 @@
             <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
         </template>
 
+        <template is="dom-if" if="{{minLengthShow}}">
+            <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
+        </template>
+
         <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
 
     </template>
@@ -331,9 +349,11 @@
                         break;
                     }
                     this._checkMaxLength();
+                    this._checkMinLength();
                 },
                 focusEvent: function(e) {
                     this._checkMaxLength();
+                    this._checkMinLength();
 
                     if (this.type === 'color') {
                         this.showColor = true;
@@ -358,6 +378,18 @@
                     }
 
                 },
+                _checkMinLength: function() {
+
+                    if (this.$.input.value && this.minlength) {
+
+                        if (this.$.input.value.length < this.minlength + 2) {
+                            this.minLengthShow = true;
+                        } else {
+                            this.minLengthShow = false;
+                        }
+                    }
+
+                },
                 _getMaxLengthClass: function(value, maxlength) {
 
                     var classList = 'maxlength';
@@ -371,6 +403,18 @@
 
                     return classList;
 
+                },
+                _getMinLengthClass: function(value, minlength) {
+
+                    var classList = 'minlength';
+
+                    if (this.$.input.value.length < this.minlength) {
+                        classList += ' error';
+                    } else {
+                        classList += ' success';
+                    }
+
+                    return classList;
                 },
                 _generatorSlug: function(str) {
                     str = str.replace(/^\s+|\s+$/g, '');
@@ -440,6 +484,13 @@
                         type: Number
                     },
                     maxLengthShow: {
+                        type: Boolean,
+                        notify: true
+                    },
+                    minlength: {
+                        type: Number
+                    },
+                    minLengthShow: {
                         type: Boolean,
                         notify: true
                     },
