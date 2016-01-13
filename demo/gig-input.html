@@ -186,6 +186,7 @@
                maxlength$="[[maxlength]]"
                min$="[[min]]"
                max$="[[max]]"
+               disabled$="[[disabled]]"
                step$="[[step]]"
                name$="[[name]]"
                readonly$="[[readonly]]"
@@ -381,15 +382,21 @@
                     },
                     required: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     readonly: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     disabled: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     type: {
                         type: String,

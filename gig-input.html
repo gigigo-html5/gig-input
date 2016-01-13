@@ -1,25 +1,10 @@
 <!--
- Webcomponents to manage input. Returns value
- @version v0.0.10 - 2015-12-21
+ Webcomponents to manage input
+ @version v0.0.10 - 2016-01-13
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="gig-input-date-behavior.html">
-<link rel="import" href="gig-input-color-behavior.html">
-<link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
-<link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
-<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
-<script>
-  WebFont.load({
-    google: {
-      families: ['Roboto:300,400']
-    }
-  });
-</script>
-
 <dom-module id="gig-input">
 
     <style>
@@ -192,6 +177,7 @@
                maxlength$="[[maxlength]]"
                min$="[[min]]"
                max$="[[max]]"
+               disabled$="[[disabled]]"
                step$="[[step]]"
                name$="[[name]]"
                readonly$="[[readonly]]"
@@ -387,15 +373,21 @@
                     },
                     required: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     readonly: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     disabled: {
                         type: Boolean,
-                        value: false
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     },
                     type: {
                         type: String,
