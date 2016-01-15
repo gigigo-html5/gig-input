@@ -440,6 +440,9 @@
                         this.typeFormat = this.type;
                     }
                 },
+                changeValue: function(value) {
+                    this.fire('change');
+                },
                 properties: {
                     name: {
                         type: String,
@@ -450,7 +453,8 @@
                         type: String,
                         value: '',
                         notify: true,
-                        reflectToAttribute: true
+                        reflectToAttribute: true,
+                        observer: 'changeValue'
                     },
                     required: {
                         type: Boolean,
