@@ -1,5 +1,3 @@
-
-
  <link rel="import" href="../polymer/polymer.html">
  <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
  <link rel="import" href="gig-input-date-behavior.html">
@@ -433,6 +431,9 @@
                         this.typeFormat = this.type;
                     }
                 },
+                changeValue: function(value) {
+                    this.fire('change');
+                },
                 properties: {
                     name: {
                         type: String,
@@ -443,7 +444,8 @@
                         type: String,
                         value: '',
                         notify: true,
-                        reflectToAttribute: true
+                        reflectToAttribute: true,
+                        observer: 'changeValue'
                     },
                     required: {
                         type: Boolean,
