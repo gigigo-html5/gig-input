@@ -1,11 +1,10 @@
 <!--
  Webcomponents to manage input
- @version v0.0.11 - 2016-01-13
+ @version v0.0.13 - 2016-01-17
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
-
 
  <link rel="import" href="../polymer/polymer.html">
  <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
@@ -359,8 +358,22 @@
                         this.showColor = true;
                     }
                 },
-                blurEvent: function() {
+                blurEvent: function(e) {
                     this.maxLengthShow = false;
+
+                    if (this.type == 'domain') {
+                        this.validateDomain(e.target.value);
+                    }
+
+                },
+                validateDomain: function(value) {
+                    if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value)){
+                        return true;
+                    } else {
+                        this.errorMessage = 'Invalid Domain';
+                        this.error = true;
+                        return false;
+                    }
                 },
                 length: function(value) {
                     return value.length;
@@ -514,6 +527,12 @@
                     showColor: {
                         type: Boolean,
                         value: false
+                    },
+                    error: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     }
                 }
             })

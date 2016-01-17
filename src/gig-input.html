@@ -1,3 +1,5 @@
+
+
  <link rel="import" href="../polymer/polymer.html">
  <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
  <link rel="import" href="gig-input-date-behavior.html">
@@ -350,8 +352,22 @@
                         this.showColor = true;
                     }
                 },
-                blurEvent: function() {
+                blurEvent: function(e) {
                     this.maxLengthShow = false;
+
+                    if (this.type == 'domain') {
+                        this.validateDomain(e.target.value);
+                    }
+
+                },
+                validateDomain: function(value) {
+                    if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value)){
+                        return true;
+                    } else {
+                        this.errorMessage = 'Invalid Domain';
+                        this.error = true;
+                        return false;
+                    }
                 },
                 length: function(value) {
                     return value.length;
@@ -505,6 +521,12 @@
                     showColor: {
                         type: Boolean,
                         value: false
+                    },
+                    error: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
                     }
                 }
             })
