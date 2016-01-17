@@ -1,20 +1,19 @@
 <!--
  Webcomponents to manage input
- @version v0.0.13 - 2016-01-17
+ @version v0.0.14 - 2016-01-17
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
 
- <link rel="import" href="../polymer/polymer.html">
- <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
- <link rel="import" href="gig-input-date-behavior.html">
- <link rel="import" href="gig-input-color-behavior.html">
- <link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
- <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
- <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
- <link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
-
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
+<link rel="import" href="gig-input-date-behavior.html">
+<link rel="import" href="gig-input-color-behavior.html">
+<link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
+<link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
 
 <dom-module id="gig-input">
 
@@ -218,7 +217,7 @@
                readonly$="[[readonly]]"
                type="{{typeFormat}}"
                value="[[value]]"
-               class$="[[getClassList(errorMessage)]]"
+               class$="[[getClassList(invalid)]]"
                on-keyup="keyupEvent"
                on-focus="focusEvent"
                on-blur="blurEvent">
@@ -279,14 +278,16 @@
                     'input': '_onInput'
                 },
                 _onInput: function() {
-                     if (this._getValidity()) {
-                         this.errorMessage = null;
-                     }
+
                 },
                 _getValidity: function() {
                     if (this.type === 'email') {
-                        return validateEmail(this.value);
-                    } else {
+                        return this.validateEmail(this.value);
+                    }
+                    else if (this.type === 'domain') {
+                        return this.validateDomain(this.value);
+                    }
+                    else {
                         return this.value != '';
                     }
                 },
@@ -303,9 +304,6 @@
                     if (this.type === 'date' || this.type === 'datetime') {
                         this.enableDate(this.type);
                     }
-
-
-                    this._getValidity();
                 },
                 getClassGroup: function(icon, group, type) {
                     var classList = 'field-group';
@@ -328,10 +326,10 @@
                 getClassIcon: function(icon) {
                     return 'icon fa '+icon;
                 },
-                getClassList: function(errorMessage) {
+                getClassList: function(invalid) {
                     var classList = '';
 
-                    if (errorMessage) {
+                    if (invalid) {
                         classList += 'error';
                     }
 
@@ -359,19 +357,27 @@
                     }
                 },
                 blurEvent: function(e) {
+                    this.invalid = false;
                     this.maxLengthShow = false;
-
-                    if (this.type == 'domain') {
-                        this.validateDomain(e.target.value);
-                    }
-
+                    this._getValidity();
                 },
                 validateDomain: function(value) {
                     if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value)){
+                        this.errorMessage = null;
                         return true;
                     } else {
+                        this.invalid = true;
                         this.errorMessage = 'Invalid Domain';
-                        this.error = true;
+                        return false;
+                    }
+                },
+                validateEmail: function(value) {
+                    if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
+                        this.errorMessage = null;
+                        return true;
+                    } else {
+                        this.invalid = true;
+                        this.errorMessage = 'Invalid email';
                         return false;
                     }
                 },
@@ -527,12 +533,6 @@
                     showColor: {
                         type: Boolean,
                         value: false
-                    },
-                    error: {
-                        type: Boolean,
-                        value: false,
-                        reflectToAttribute: true,
-                        notify: true
                     }
                 }
             })
