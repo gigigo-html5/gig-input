@@ -1,16 +1,16 @@
 <!--
  Webcomponents to manage input
- @version v0.0.14 - 2016-01-17
+ @version v0.0.15 - 2016-01-21
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
-
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="gig-input-date-behavior.html">
 <link rel="import" href="gig-input-color-behavior.html">
-<link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
+<link rel="import" href="../gig-icon/gig-icon.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
 <link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
@@ -181,6 +181,10 @@
             border-right: 1px solid #e4eaec;
         }
 
+        .field-group span.icon iron-icon {
+            width: 17px;
+        }
+
         .field-group span.icon i {
             display: block;
             width: 16px;
@@ -223,11 +227,11 @@
                on-blur="blurEvent">
 
                <template is="dom-if" if="[[icon]]">
-                   <span class$="[[getClassIcon(icon)]]"></span>
+                   <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
                </template>
 
                <template is="dom-if" if="[[checkColor(type)]]">
-                   <span class$="[[getClassIcon(icon)]]"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
+                   <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
                </template>
 
         </div>
@@ -237,7 +241,6 @@
                 <div class="picker"></div>
                 <div class="slide"></div>
             </div>
-
         </template>
 
         <template is="dom-if" if="[[errorMessage]]">
@@ -324,7 +327,7 @@
                     }
                 },
                 getClassIcon: function(icon) {
-                    return 'icon fa '+icon;
+                    return 'fa:'+icon.replace('fa-','');
                 },
                 getClassList: function(invalid) {
                     var classList = '';

@@ -1,6 +1,6 @@
 {
   "name": "gig-input",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "homepage": "https://github.com/gigigo-html5/gig-input",
   "authors": [
     "Pedro Peña <pedro.jose@gigigo.com>"
@@ -14,13 +14,13 @@
     "tests"
   ],
   "dependencies": {
-    "components-font-awesome": "~4.5.0",
     "iron-form-element-behavior": "PolymerElements/iron-form-element-behavior#~1.0.4",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#~1.1.2",
     "iron-validatable-behavior": "PolymerElements/iron-validatable-behavior#~1.0.4",
     "moment": "~2.10.6",
     "pikaday-time": "~1.3.3",
     "polymer": "~1.2.0",
-    "font-roboto": "~0.0.2"
+    "font-roboto": "~0.0.2",
+    "gig-icon": "~0.0.1"
   }
 }
