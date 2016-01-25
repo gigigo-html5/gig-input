@@ -6,7 +6,6 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
-<link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
 
 <dom-module id="gig-input">
 
@@ -200,32 +199,32 @@
             </template>
 
         <input id="input"
-               autocomplete$="[[autocomplete]]"
-               required$="[[required]]"
-               placeholder$="[[placeholder]]"
-               readonly$="[[readonly]]"
-               minlength$="[[minlength]]"
-               maxlength$="[[maxlength]]"
-               min$="[[min]]"
-               max$="[[max]]"
-               disabled$="[[disabled]]"
-               step$="[[step]]"
-               name$="[[name]]"
-               readonly$="[[readonly]]"
-               type="{{typeFormat}}"
-               value="[[value]]"
-               class$="[[getClassList(invalid)]]"
-               on-keyup="keyupEvent"
-               on-focus="focusEvent"
-               on-blur="blurEvent">
+           autocomplete$="[[autocomplete]]"
+           required$="[[required]]"
+           placeholder$="[[placeholder]]"
+           readonly$="[[readonly]]"
+           minlength$="[[minlength]]"
+           maxlength$="[[maxlength]]"
+           min$="[[min]]"
+           max$="[[max]]"
+           disabled$="[[disabled]]"
+           step$="[[step]]"
+           name$="[[name]]"
+           readonly$="[[readonly]]"
+           type="{{typeFormat}}"
+           value="[[value]]"
+           class$="[[getClassList(invalid)]]"
+           on-keyup="keyupEvent"
+           on-focus="focusEvent"
+           on-blur="blurEvent">
 
-               <template is="dom-if" if="[[icon]]">
-                   <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
-               </template>
+           <template is="dom-if" if="[[icon]]">
+               <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
+           </template>
 
-               <template is="dom-if" if="[[checkColor(type)]]">
-                   <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
-               </template>
+           <template is="dom-if" if="[[checkColor(type)]]">
+               <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
+           </template>
 
         </div>
 

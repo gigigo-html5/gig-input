@@ -1,10 +1,66 @@
 <!--
  Webcomponents to manage input
- @version v0.0.15 - 2016-01-21
+ @version v0.0.16 - 2016-01-25
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
  -->
+
+<link href="../polymer/polymer.html">
+<script src="../pikaday-time/pikaday.js"></script>
+<script src="../moment/moment.js"></script>
+<script src="../moment/locale/es.js"></script>
+<link rel="stylesheet" href="../pikaday-time/css/pikaday.css">
+
+
+<script>
+    Polymer.GigInputDateBehavior = {
+        enableDate: function() {
+            self = this;
+
+            if (this.type == 'datetime') {
+                this.showTime = true;
+            } else {
+                this.showTime = false;
+            }
+
+            moment.locale(self.lang);
+
+            var picker = new Pikaday({
+                showTime: this.showTime,
+                use24hour: true,
+                field: this.$.input,
+                format: this.formatDate,
+                position: 'bottom left',
+                reposition: false,
+                minDate: this.minDate,
+                i18n: {
+                    previousMonth : 'Previous Month',
+                    nextMonth     : 'Next Month',
+                    months        : moment.localeData()._months,
+                    weekdays      : moment.localeData()._weekdays,
+                    weekdaysShort : moment.localeData()._weekdaysShort
+                },
+                onSelect: function (date) {
+                    self.$.input.value = moment(date).format(self.formatDate);
+                }
+            });
+
+        },
+        properties: {
+            formatDate: {
+                type: String,
+                notify: true
+            },
+            minDate: {
+                type: Date,
+                value: null
+            }
+        }
+
+    }
+</script>
+
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="gig-input-date-behavior.html">
@@ -13,7 +69,6 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
-<link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
 
 <dom-module id="gig-input">
 
@@ -207,32 +262,32 @@
             </template>
 
         <input id="input"
-               autocomplete$="[[autocomplete]]"
-               required$="[[required]]"
-               placeholder$="[[placeholder]]"
-               readonly$="[[readonly]]"
-               minlength$="[[minlength]]"
-               maxlength$="[[maxlength]]"
-               min$="[[min]]"
-               max$="[[max]]"
-               disabled$="[[disabled]]"
-               step$="[[step]]"
-               name$="[[name]]"
-               readonly$="[[readonly]]"
-               type="{{typeFormat}}"
-               value="[[value]]"
-               class$="[[getClassList(invalid)]]"
-               on-keyup="keyupEvent"
-               on-focus="focusEvent"
-               on-blur="blurEvent">
+           autocomplete$="[[autocomplete]]"
+           required$="[[required]]"
+           placeholder$="[[placeholder]]"
+           readonly$="[[readonly]]"
+           minlength$="[[minlength]]"
+           maxlength$="[[maxlength]]"
+           min$="[[min]]"
+           max$="[[max]]"
+           disabled$="[[disabled]]"
+           step$="[[step]]"
+           name$="[[name]]"
+           readonly$="[[readonly]]"
+           type="{{typeFormat}}"
+           value="[[value]]"
+           class$="[[getClassList(invalid)]]"
+           on-keyup="keyupEvent"
+           on-focus="focusEvent"
+           on-blur="blurEvent">
 
-               <template is="dom-if" if="[[icon]]">
-                   <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
-               </template>
+           <template is="dom-if" if="[[icon]]">
+               <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
+           </template>
 
-               <template is="dom-if" if="[[checkColor(type)]]">
-                   <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
-               </template>
+           <template is="dom-if" if="[[checkColor(type)]]">
+               <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
+           </template>
 
         </div>
 
