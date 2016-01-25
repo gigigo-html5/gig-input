@@ -355,6 +355,7 @@
                     this.invalid = false;
                     this.maxLengthShow = false;
                     this._getValidity();
+                    this.fire('blur');
                 },
                 validateDomain: function(value) {
                     if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value)){
