@@ -189,6 +189,51 @@
             z-index: 1000;
         }
 
+        .tags .tag {
+            display: inline-block;
+            height: 22px;
+            background-color: #f3f7f9;
+            border: 1px solid #e4eaec;
+            border-radius: 3px;
+            vertical-align: top;
+            white-space: nowrap;
+            margin: 10px 5px 5px;
+            padding: 2px 5px 0 5px;
+        }
+
+        .tags .tag:hover {
+            border-color: #89bceb;
+        }
+
+        .tags .tag span {
+            display: inline-block;
+            padding-left: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+            font-size: 14px;
+            color: #76838f;
+            font-weight: 300;
+        }
+
+        .tags .tag .close {
+            display: inline-block;
+            float: none;
+            height: 100%;
+            padding-right: 4px;
+            margin-left: 5px;
+            font-family: Arial;
+            font-size: 11px;
+            vertical-align: top;
+            text-decoration: none;
+            color: #76838f;
+            line-height: 17px;
+        }
+
+        .tags .tag .close:hover {
+            color: #000;
+        }
+
     </style>
 
     <template>
@@ -247,6 +292,18 @@
             <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
         </template>
 
+        <template is="dom-if" if="{{isTags(type)}}">
+            <input type="text" placeholder$="[[placeholder]]" on-keyup="tagEvent">
+            <div class="tags">
+            <template is="dom-repeat" items="{{tags}}">
+                <div class="tag">
+                    <span>{{item}}</span>
+                    <a href="#" class="close" on-click="deleteTag" tabindex="-1">×</a>
+               </div>
+            </template>
+            </div>
+        </template>
+
         <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
 
     </template>
@@ -275,6 +332,16 @@
                 _onInput: function() {
 
                 },
+                ready: function() {
+                    this._checkType();
+                    if (this.type === 'date' || this.type === 'datetime') {
+                        this.enableDate(this.type);
+                    }
+
+                    if (this.type === 'tags') {
+                        this.checkTags(this.value);
+                    }
+                },
                 _getValidity: function() {
                     if (this.type === 'email') {
                         return this.validateEmail(this.value);
@@ -292,12 +359,6 @@
                 readyTemplate: function() {
                     if (this.type === 'color') {
                         this.enableColor();
-                    }
-                },
-                ready: function() {
-                    this._checkType();
-                    if (this.type === 'date' || this.type === 'datetime') {
-                        this.enableDate(this.type);
                     }
                 },
                 getClassGroup: function(icon, group, type) {
@@ -330,7 +391,7 @@
 
                     return classList;
                 },
-                keyupEvent: function () {
+                keyupEvent: function (event) {
                     self = this;
                     switch(this.type) {
                         case 'slug':
@@ -379,6 +440,9 @@
                 },
                 length: function(value) {
                     return value.length;
+                },
+                isTags: function(type) {
+                    return type === 'tags';
                 },
                 _checkMaxLength: function() {
 
@@ -451,12 +515,39 @@
                     if (this.type === 'slug' || this.type === 'date' || this.type === 'color') {
                         this.typeFormat = 'text';
                     }
+                    else if (this.type === 'tags') {
+                        this.typeFormat = 'hidden';
+                    }
                     else {
                         this.typeFormat = this.type;
                     }
                 },
                 changeValue: function(value) {
                     this.fire('change');
+                },
+                tagEvent: function(event) {
+                    if (event.keyCode === 13) {
+                        this.generateTags(event.target.value);
+                         event.target.value = null;
+                    }
+                },
+                generateTags: function(value) {
+                    if (this.tags.indexOf(value) < 0) {
+                        this.push('tags', value);
+                        this.value = this.tags.toString();
+                    }
+                },
+                deleteTag: function(e) {
+                    var index = e.model.index;
+                    this.splice('tags',index, 1);
+                    this.value = this.tags.toString();
+
+                    e.preventDefault();
+                },
+                checkTags: function(value) {
+                    if (value) {
+                       this.tags = value.split(',');
+                    }
                 },
                 properties: {
                     name: {
@@ -470,6 +561,13 @@
                         notify: true,
                         reflectToAttribute: true,
                         observer: 'changeValue'
+                    },
+                    tags: {
+                        type: Array,
+                        value: function() {
+                            return [];
+                        },
+                        notify: true
                     },
                     required: {
                         type: Boolean,
