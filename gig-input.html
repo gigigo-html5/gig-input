@@ -1,6 +1,6 @@
 <!--
  Webcomponents to manage input
- @version v0.0.18 - 2016-02-19
+ @version v0.0.19 - 2016-02-24
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -427,7 +427,7 @@
                    this.fire('blur');
                },
                validateDomain: function(value) {
-                   if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value)){
+                   if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)){
                        this.errorMessage = null;
                        return true;
                    } else {
@@ -530,8 +530,8 @@
                        this.typeFormat = this.type;
                    }
                },
-               changeValue: function(value) {
-                   this.fire('change');
+               changeValue: function(e, detail) {
+                   this.fire('change', {value: this.value});
                },
                tagEvent: function(e) {
                    if (e.keyCode == 13) {
