@@ -1,3 +1,11 @@
+<!--
+ Webcomponents to manage input
+ @version v0.1.0 - 2016-03-22
+ @link https://github.com/gigigo-html5/gig-input
+ @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
+ @license MIT License, http://www.opensource.org/licenses/MIT
+
+ -->
 <link href="../polymer/polymer.html">
 <script src="../pikaday-time/pikaday.js"></script>
 <script src="../moment/moment.js"></script>
@@ -6,7 +14,7 @@
 
 
 <script>
-    Polymer.GigInputDateBehavior = {
+    GigInputDateBehavior = {
         enableDate: function() {
             self = this;
 
@@ -18,7 +26,7 @@
 
             moment.locale(self.lang);
 
-            var picker = new Pikaday({
+            this.picker = new Pikaday({
                 showTime: this.showTime,
                 use24hour: true,
                 field: this.$.input,
@@ -35,6 +43,12 @@
                 },
                 onSelect: function (date) {
                     self.$.input.value = moment(date).format(self.formatDate);
+                },
+                onOpen: function() {
+                    this.pickerShow = true;
+                },
+                onClose: function() {
+                    this.pickerShow = false;
                 }
             });
 
@@ -47,6 +61,10 @@
             minDate: {
                 type: Date,
                 value: null
+            },
+            pickerShow: {
+                type: Boolean,
+                value: false
             }
         }
 

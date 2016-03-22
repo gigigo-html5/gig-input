@@ -1,514 +1,665 @@
- <link rel="import" href="../polymer/polymer.html">
- <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
- <link rel="import" href="gig-input-date-behavior.html">
- <link rel="import" href="gig-input-color-behavior.html">
- <link rel="stylesheet" href="../components-font-awesome/css/font-awesome.css">
- <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
- <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
- <link rel="stylesheet" href="../font-roboto/dist/styles/roboto.min.css">
-
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
+<link rel="import" href="gig-input-date-behavior.html">
+<link rel="import" href="gig-input-color-behavior.html">
+<link rel="import" href="../bower_components/gig-icon/gig-icon.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
 
 <dom-module id="gig-input">
 
-    <style>
+   <style>
 
-        * {
-            box-sizing: border-box;
-            font-family: Roboto,sans-serif;
-        }
+       * {
+           box-sizing: border-box;
+           font-family: Roboto,sans-serif;
+       }
 
-        input {
-            display: block;
-            width: 100%;
-            height: 36px;
-            padding: 6px 15px;
-            font-size: 14px;
-            line-height: 1.57142857;
-            font-weight: 300;
-            color: var(--input-color-primary, #76838f);
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid var(--input-border-color, #e4eaec);
-            border-radius: 3px;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            @apply(--input-style);
-        }
-        input:focus {
-            border-color: var(--input-border-color-focus, #62a8ea);
-            outline: 0;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
-        }
-        input.focus,
-        input:focus {
-            border-color: var(--input-border-color-focus, #62a8ea);
-            -webkit-box-shadow: none;
-            box-shadow: none;
-        }
-        input::-moz-placeholder {
-            color: var(--input-color-placeholder, #a3afb7);
-            opacity: 1;
-        }
-        input:-ms-input-placeholder {
-            color: var(--input-color-placeholder, #a3afb7);
-        }
-        input::-webkit-input-placeholder {
-            color: var(--input-color-placeholder, #a3afb7);
-        }
-        input::-ms-expand {
-            background-color: transparent;
-            border: 0;
-        }
-        input[disabled],
-        input[readonly],
-        fieldset[disabled] .form-control {
-            background-color: var(--input-background-color-disabled, #f3f7f9);
-            opacity: 1;
-        }
+       input {
+           display: block;
+           width: 100%;
+           height: 36px;
+           padding: 6px 15px;
+           font-size: 14px;
+           line-height: 1.57142857;
+           font-weight: 300;
+           color: var(--input-color-primary, #76838f);
+           background-color: #fff;
+           background-image: none;
+           border: 1px solid var(--input-border-color, #e4eaec);
+           border-radius: 3px;
+           -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+           -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+           -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+           @apply(--input-style);
+       }
+       input:focus {
+           border-color: var(--input-border-color-focus, #62a8ea);
+           outline: 0;
+           -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
+           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
+       }
+       input.focus,
+       input:focus {
+           border-color: var(--input-border-color-focus, #62a8ea);
+           -webkit-box-shadow: none;
+           box-shadow: none;
+       }
+       input::-moz-placeholder {
+           color: var(--input-color-placeholder, #a3afb7);
+           opacity: 1;
+       }
+       input:-ms-input-placeholder {
+           color: var(--input-color-placeholder, #a3afb7);
+       }
+       input::-webkit-input-placeholder {
+           color: var(--input-color-placeholder, #a3afb7);
+       }
+       input::-ms-expand {
+           background-color: transparent;
+           border: 0;
+       }
+       input[disabled],
+       input[readonly],
+       fieldset[disabled] .form-control {
+           background-color: var(--input-background-color-disabled, #f3f7f9);
+           opacity: 1;
+       }
 
-        input.error {
-            border-color: var(--input-color-error, #f96868);
-        }
+       input.error {
+           border-color: var(--input-color-error, #f96868);
+       }
 
-        .error {
-            color: var(--input-color-error, #f96868);
-        }
+       .error {
+           color: var(--input-color-error, #f96868);
+       }
 
-        div.error {
-            padding: 5px 0;
-        }
+       div.error {
+           padding: 5px 0;
+       }
 
-        .small {
-            font-size: 85%;
-        }
+       .small {
+           font-size: 85%;
+       }
 
-        .maxlength {
-            float: right;
-            border-radius: 3px;
-            margin: 5px 0;
-            color: white;
-            font-weight: bold;
-            padding: 2px 5px;
-            font-size: 75%;
-            display: block
-        }
+       .maxlength {
+           float: right;
+           border-radius: 3px;
+           margin: 5px 0;
+           color: white;
+           font-weight: bold;
+           padding: 2px 5px;
+           font-size: 75%;
+           display: block
+       }
 
-        .maxlength.success {
-            background-color: var(--input-color-success, #46BE8A);
-        }
+       .maxlength.success {
+           background-color: var(--input-color-success, #46BE8A);
+       }
 
-        .maxlength.error {
-            background-color: var(--input-color-error, #f96868);
-            color: white !important;
-        }
+       .maxlength.error {
+           background-color: var(--input-color-error, #f96868);
+           color: white !important;
+       }
 
-        .minlength {
-            float: left;
-            border-radius: 3px;
-            margin: 5px 0;
-            color: white;
-            font-weight: bold;
-            padding: 2px 5px;
-            font-size: 75%;
-            display: block
-        }
+       .minlength {
+           float: left;
+           border-radius: 3px;
+           margin: 5px 0;
+           color: white;
+           font-weight: bold;
+           padding: 2px 5px;
+           font-size: 75%;
+           display: block
+       }
 
-        .minlength.success {
-            background-color: var(--input-color-success, #46BE8A);
-        }
+       .minlength.success {
+           background-color: var(--input-color-success, #46BE8A);
+       }
 
-        .minlength.error {
-            background-color: var(--input-color-error, #f96868);
-            color: white !important;
-        }
+       .minlength.error {
+           background-color: var(--input-color-error, #f96868);
+           color: white !important;
+       }
 
-        .field-group {
-            display: -webkit-flex;
-            -webkit-align-items: center;
-            display: flex;
-            align-items: center;
-        }
+       .field-group {
+           display: -webkit-flex;
+           -webkit-align-items: center;
+           display: flex;
+           align-items: center;
+       }
 
-        .group-icon input {
-            border-bottom-right-radius: 0;
-            border-top-right-radius: 0;
-        }
+       .group-icon input {
+           border-bottom-right-radius: 0;
+           border-top-right-radius: 0;
+       }
 
-        .group input {
-            border-bottom-left-radius: 0;
-            border-top-left-radius: 0;
-        }
+       .group input {
+           border-bottom-left-radius: 0;
+           border-top-left-radius: 0;
+       }
 
-        .field-group span {
-            display: inline-block;
-            background-color: #f3f7f9;
-            border: 1px solid #e4eaec;
-            border-radius: 3px;
-            white-space: nowrap;
-            vertical-align: middle;
-            color: #76838f;
-            font-size: 14px;
-            float: right;
-            height: 36px;
-            text-align: center;
-            line-height: 34px;
-            border-right: 0;
-            padding: 0 10px;
-            border-bottom-right-radius: 0;
-            border-top-right-radius: 0;
-        }
+       .field-group span {
+           display: inline-block;
+           background-color: #f3f7f9;
+           border: 1px solid #e4eaec;
+           border-radius: 3px;
+           white-space: nowrap;
+           vertical-align: middle;
+           color: #76838f;
+           font-size: 14px;
+           float: right;
+           height: 36px;
+           text-align: center;
+           line-height: 34px;
+           border-right: 0;
+           padding: 0 10px;
+           border-bottom-right-radius: 0;
+           border-top-right-radius: 0;
+       }
 
-        .field-group span.icon {
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            border-bottom-left-radius: 0;
-            border-top-left-radius: 0;
-            border-bottom-right-radius: 3px;
-            border-top-right-radius: 3px;
-            border-left: 0;
-            border-right: 1px solid #e4eaec;
-        }
+       .field-group span.icon {
+           width: 36px;
+           height: 36px;
+           padding: 0;
+           border-bottom-left-radius: 0;
+           border-top-left-radius: 0;
+           border-bottom-right-radius: 3px;
+           border-top-right-radius: 3px;
+           border-left: 0;
+           border-right: 1px solid #e4eaec;
+       }
 
-        .field-group span.icon i {
-            display: block;
-            width: 16px;
-            height: 16px;
-            margin: 10px;
-            cursor: pointer;
-        }
+       .field-group span.btn-icon {
+           width: 36px;
+           height: 36px;
+           padding: 0;
+           cursor: pointer;
+           border-bottom-left-radius: 0;
+           border-top-left-radius: 0;
+           border-bottom-right-radius: 3px;
+           border-top-right-radius: 3px;
+           border-left: 0;
+           border-color: #46be8a;
+           background: #46be8a;
+           color: white;
+       }
 
-        iron-overlay-backdrop {
-            z-index: 1000;
-        }
+       .field-group span.icon iron-icon, .field-group span.btn-icon iron-icon {
+           width: 17px;
+       }
 
-    </style>
+       .field-group span.icon i {
+           display: block;
+           width: 16px;
+           height: 16px;
+           margin: 10px;
+           cursor: pointer;
+       }
 
-    <template>
-        <div class="field-group" class$="[[getClassGroup(icon, group, type)]]">
+       iron-overlay-backdrop {
+           z-index: 1000;
+       }
 
-            <template is="dom-if" if="[[group]]">
-                <span>[[group]]</span>
-            </template>
+       .tags .tag {
+           display: inline-block;
+           height: 22px;
+           background-color: #f3f7f9;
+           border: 1px solid #e4eaec;
+           border-radius: 3px;
+           vertical-align: top;
+           white-space: nowrap;
+           margin: 10px 5px 5px;
+           padding: 2px 5px 0 5px;
+       }
 
-        <input id="input"
-               autocomplete$="[[autocomplete]]"
-               required$="[[required]]"
-               placeholder$="[[placeholder]]"
-               readonly$="[[readonly]]"
-               minlength$="[[minlength]]"
-               maxlength$="[[maxlength]]"
-               min$="[[min]]"
-               max$="[[max]]"
-               disabled$="[[disabled]]"
-               step$="[[step]]"
-               name$="[[name]]"
-               readonly$="[[readonly]]"
-               type="{{typeFormat}}"
-               value="[[value]]"
-               class$="[[getClassList(errorMessage)]]"
-               on-keyup="keyupEvent"
-               on-focus="focusEvent"
-               on-blur="blurEvent">
+       .tags .tag:hover {
+           border-color: #89bceb;
+       }
 
-               <template is="dom-if" if="[[icon]]">
-                   <span class$="[[getClassIcon(icon)]]"></span>
-               </template>
+       .tags .tag span {
+           display: inline-block;
+           padding-left: 4px;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           vertical-align: top;
+           font-size: 14px;
+           color: #76838f;
+           font-weight: 300;
+       }
 
-               <template is="dom-if" if="[[checkColor(type)]]">
-                   <span class$="[[getClassIcon(icon)]]"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
-               </template>
+       .tags .tag .close {
+           display: inline-block;
+           float: none;
+           height: 100%;
+           padding-right: 4px;
+           margin-left: 5px;
+           font-family: Arial;
+           font-size: 11px;
+           vertical-align: top;
+           text-decoration: none;
+           color: #76838f;
+           line-height: 17px;
+       }
 
-        </div>
-
-        <template is="dom-if" if="[[checkColor(type)]]" on-dom-change="readyTemplate" id="color">
-            <div class="modal-color cp-default" hidden$="{{!showColor}}">
-                <div class="picker"></div>
-                <div class="slide"></div>
-            </div>
-
-        </template>
-
-        <template is="dom-if" if="[[errorMessage]]">
-            <div class="error small">[[errorMessage]]</div>
-        </template>
-
-        <template is="dom-if" if="{{maxLengthShow}}">
-            <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
-        </template>
-
-        <template is="dom-if" if="{{minLengthShow}}">
-            <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
-        </template>
-
-        <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
-
-    </template>
-
-    <script>
-        (function() {
-
-            var self;
-
-            function validateEmail(email) {
-                var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-                return re.test(email);
-            }
-
-            Polymer({
-                is: 'gig-input',
-                behaviors: [
-                    Polymer.GigInputDateBehavior,
-                    Polymer.GigInputColorBehavior,
-                    Polymer.IronFormElementBehavior,
-                    Polymer.IronValidatableBehavior
-                ],
-                listeners: {
-                    'input': '_onInput'
-                },
-                _onInput: function() {
-                     if (this._getValidity()) {
-                         this.errorMessage = null;
-                     }
-                },
-                _getValidity: function() {
-                    if (this.type === 'email') {
-                        return validateEmail(this.value);
-                    } else {
-                        return this.value != '';
-                    }
-                },
-                focusInput: function() {
-                    this.$.input.focus();
-                },
-                readyTemplate: function() {
-                    if (this.type === 'color') {
-                        this.enableColor();
-                    }
-                },
-                ready: function() {
-                    this._checkType();
-                    if (this.type === 'date' || this.type === 'datetime') {
-                        this.enableDate(this.type);
-                    }
+       .tags .tag .close:hover {
+           color: #000;
+       }
 
 
-                    this._getValidity();
-                },
-                getClassGroup: function(icon, group, type) {
-                    var classList = 'field-group';
+   </style>
 
-                    if (icon || type == 'color') {
-                        classList += ' group-icon';
-                    }
+   <template>
+       <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]]">
 
-                    if (group) {
-                        classList += ' group';
-                    }
+           <template is="dom-if" if="[[group]]">
+               <span>[[group]]</span>
+           </template>
 
-                    return classList;
-                },
-                checkColor: function(type) {
-                    if (type === 'color') {
-                        return true;
-                    }
-                },
-                getClassIcon: function(icon) {
-                    return 'icon fa '+icon;
-                },
-                getClassList: function(errorMessage) {
-                    var classList = '';
+       <input id="input"
+          autocomplete$="[[autocomplete]]"
+          required$="[[required]]"
+          placeholder$="[[placeholder]]"
+          readonly$="[[readonly]]"
+          minlength$="[[minlength]]"
+          maxlength$="[[maxlength]]"
+          min$="[[min]]"
+          max$="[[max]]"
+          disabled$="[[disabled]]"
+          step$="[[step]]"
+          name$="[[name]]"
+          readonly$="[[readonly]]"
+          type="{{typeFormat}}"
+          value="[[value]]"
+          class$="[[getClassList(invalid)]]"
+          on-keyup="keyupEvent"
+          on-focus="focusEvent"
+          on-blur="blurEvent">
 
-                    if (errorMessage) {
-                        classList += 'error';
-                    }
+          <template is="dom-if" if="[[icon]]">
+              <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
+          </template>
 
-                    return classList;
-                },
-                keyupEvent: function () {
-                    self = this;
-                    switch(this.type) {
-                        case 'slug':
-                            self.value = self._generatorSlug(self.$.input.value)
-                            break;
-                        default:
-                            self.value = self.$.input.value;
-                        break;
-                    }
-                    this._checkMaxLength();
-                    this._checkMinLength();
-                },
-                focusEvent: function(e) {
-                    this._checkMaxLength();
-                    this._checkMinLength();
+          <template is="dom-if" if="[[buttonIcon]]">
+              <span class="btn-icon" icon="[[buttonIcon]]" on-click="iconHandler"><iron-icon icon$="[[getClassIcon(buttonIcon)]]"></iron-icon></span>
+          </template>
 
-                    if (this.type === 'color') {
-                        this.showColor = true;
-                    }
-                },
-                blurEvent: function() {
-                    this.maxLengthShow = false;
-                },
-                length: function(value) {
-                    return value.length;
-                },
-                _checkMaxLength: function() {
+          <template is="dom-if" if="[[checkColor(type)]]">
+              <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
+          </template>
 
-                    if (this.$.input.value && this.maxlength) {
-                        var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
+       </div>
 
-                        if (percentage > 70) {
-                            this.maxLengthShow = true;
-                        } else {
-                            this.maxLengthShow = false;
-                        }
-                    }
+       <template is="dom-if" if="[[checkColor(type)]]" on-dom-change="readyTemplate" id="color">
+           <div class="modal-color cp-default" hidden$="{{!showColor}}">
+               <div class="picker"></div>
+               <div class="slide"></div>
+           </div>
+       </template>
 
-                },
-                _checkMinLength: function() {
+       <template is="dom-if" if="[[errorMessage]]">
+           <div class="error small">[[errorMessage]]</div>
+       </template>
 
-                    if (this.$.input.value && this.minlength) {
+       <template is="dom-if" if="{{maxLengthShow}}">
+           <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
+       </template>
 
-                        if (this.$.input.value.length < this.minlength + 2) {
-                            this.minLengthShow = true;
-                        } else {
-                            this.minLengthShow = false;
-                        }
-                    }
+       <template is="dom-if" if="{{minLengthShow}}">
+           <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
+       </template>
 
-                },
-                _getMaxLengthClass: function(value, maxlength) {
+       <template is="dom-if" if="{{isTags(type)}}">
+           <input type="text" placeholder$="[[placeholder]]" on-keypress="tagEvent">
+           <div class="tags">
+           <template is="dom-repeat" items="{{tags}}">
+               <div class="tag">
+                   <span>{{item}}</span>
+                   <a href="#" class="close" on-click="deleteTag" tabindex="-1">×</a>
+              </div>
+           </template>
+           </div>
+       </template>
 
-                    var classList = 'maxlength';
-                    var percentage = ((value.length / maxlength) * 100).toFixed(2);
+       <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
 
-                    if (percentage < 100) {
-                        classList += ' success';
-                    } else {
-                        classList += ' error';
-                    }
+   </template>
 
-                    return classList;
+   <script>
+       (function() {
 
-                },
-                _getMinLengthClass: function(value, minlength) {
+           Polymer({
+               is: 'gig-input',
+               behaviors: [
+                   GigInputDateBehavior,
+                   GigInputColorBehavior,
+                   Polymer.IronFormElementBehavior,
+                   Polymer.IronValidatableBehavior
+               ],
+               listeners: {
+                   'input': '_onInput'
+               },
+               _onInput: function() {
 
-                    var classList = 'minlength';
+               },
+               ready: function() {
+                   this._checkType();
+                   if (this.type === 'date' || this.type === 'datetime') {
+                       this.enableDate(this.type);
+                   }
 
-                    if (this.$.input.value.length < this.minlength) {
-                        classList += ' error';
-                    } else {
-                        classList += ' success';
-                    }
+                   if (this.type === 'tags') {
+                       this.checkTags(this.value);
+                   }
+               },
+               _getValidity: function() {
+                   if (this.type === 'email') {
+                       return this.validateEmail(this.value);
+                   }
+                   else if (this.type === 'domain') {
+                       return this.validateDomain(this.value);
+                   }
+                   else {
+                       return this.value != '';
+                   }
+               },
+               iconHandler: function() {
+                   this.$.input.click();
+               },
+               focusInput: function() {
+                   this.$.input.focus();
+               },
+               readyTemplate: function() {
+                   if (this.type === 'color') {
+                       this.enableColor();
+                   }
+               },
+               getClassGroup: function(icon, group, type, btnIcon) {
+                   var classList = 'field-group';
 
-                    return classList;
-                },
-                _generatorSlug: function(str) {
-                    str = str.replace(/^\s+|\s+$/g, '');
-                    str = str.toLowerCase();
+                   if (icon || type == 'color' || btnIcon) {
+                       classList += ' group-icon';
+                   }
 
-                    var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-                    var to   = "aaaaaeeeeeiiiiooooouuuunc------";
-                    for (var i=0, l=from.length ; i<l ; i++) {
-                        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                    }
+                   if (group) {
+                       classList += ' group';
+                   }
 
-                    str = str.replace(/[^a-z0-9 -]/g, '')
-                            .replace(/\s+/g, '-')
-                            .replace(/-+/g, '-');
+                   return classList;
+               },
+               checkColor: function(type) {
+                   if (type === 'color') {
+                       return true;
+                   }
+               },
+               getClassIcon: function(icon) {
+                   return 'fa:'+icon.replace('fa-','');
+               },
+               getClassList: function(invalid) {
+                   var classList = '';
 
-                    return str;
-                },
-                _checkType: function() {
-                    if (this.type === 'slug' || this.type === 'date' || this.type === 'color') {
-                        this.typeFormat = 'text';
-                    }
-                    else {
-                        this.typeFormat = this.type;
-                    }
-                },
-                changeValue: function(value) {
-                    this.fire('change');
-                },
-                properties: {
-                    name: {
-                        type: String,
-                        notify: true,
-                        reflectToAttribute: true
-                    },
-                    value: {
-                        type: String,
-                        value: '',
-                        notify: true,
-                        reflectToAttribute: true,
-                        observer: 'changeValue'
-                    },
-                    required: {
-                        type: Boolean,
-                        value: false,
-                        reflectToAttribute: true,
-                        notify: true
-                    },
-                    readonly: {
-                        type: Boolean,
-                        value: false,
-                        reflectToAttribute: true,
-                        notify: true
-                    },
-                    disabled: {
-                        type: Boolean,
-                        value: false,
-                        reflectToAttribute: true,
-                        notify: true
-                    },
-                    type: {
-                        type: String,
-                        value: 'text',
-                        notify: true
-                    },
-                    typeFormat: {
-                        type: String,
-                        value: 'text',
-                        notify: true
-                    },
-                    maxlength: {
-                        type: Number
-                    },
-                    maxLengthShow: {
-                        type: Boolean,
-                        notify: true
-                    },
-                    minlength: {
-                        type: Number
-                    },
-                    minLengthShow: {
-                        type: Boolean,
-                        notify: true
-                    },
-                    icon: {
-                        type: String,
-                        value: null
-                    },
-                    lang: {
-                        type: String,
-                        value: 'en',
-                        notify: true
-                    },
-                    group: {
-                        type: String,
-                        value: null
-                    },
-                    showColor: {
-                        type: Boolean,
-                        value: false
-                    }
-                }
-            })
-        })();
-    </script>
+                   if (invalid) {
+                       classList += 'error';
+                   }
+
+                   return classList;
+               },
+               keyupEvent: function (event) {
+                   var self = this;
+                   switch(this.type) {
+                       case 'slug':
+                           self.value = self._generatorSlug(self.$.input.value)
+                           break;
+                       default:
+                           self.value = self.$.input.value;
+                       break;
+                   }
+                   this._checkMaxLength();
+                   this._checkMinLength();
+               },
+               focusEvent: function(e) {
+                   this._checkMaxLength();
+                   this._checkMinLength();
+
+                   if (this.type === 'color') {
+                       this.showColor = true;
+                   }
+               },
+               blurEvent: function(e) {
+                   this.invalid = false;
+                   this.maxLengthShow = false;
+                   this._getValidity();
+                   this.fire('blur');
+               },
+               validateDomain: function(value) {
+                   if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)){
+                       this.errorMessage = null;
+                       return true;
+                   } else {
+                       this.invalid = true;
+                       this.errorMessage = 'Invalid Domain';
+                       return false;
+                   }
+               },
+               validateEmail: function(value) {
+                   if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
+                       this.errorMessage = null;
+                       return true;
+                   } else {
+                       this.invalid = true;
+                       this.errorMessage = 'Invalid email';
+                       return false;
+                   }
+               },
+               length: function(value) {
+                   return value.length;
+               },
+               isTags: function(type) {
+                   return type === 'tags';
+               },
+               _checkMaxLength: function() {
+
+                   if (this.$.input.value && this.maxlength) {
+                       var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
+
+                       if (percentage > 70) {
+                           this.maxLengthShow = true;
+                       } else {
+                           this.maxLengthShow = false;
+                       }
+                   }
+
+               },
+               _checkMinLength: function() {
+
+                   if (this.$.input.value && this.minlength) {
+
+                       if (this.$.input.value.length < this.minlength + 2) {
+                           this.minLengthShow = true;
+                       } else {
+                           this.minLengthShow = false;
+                       }
+                   }
+
+               },
+               _getMaxLengthClass: function(value, maxlength) {
+
+                   var classList = 'maxlength';
+                   var percentage = ((value.length / maxlength) * 100).toFixed(2);
+
+                   if (percentage < 100) {
+                       classList += ' success';
+                   } else {
+                       classList += ' error';
+                   }
+
+                   return classList;
+
+               },
+               _getMinLengthClass: function(value, minlength) {
+
+                   var classList = 'minlength';
+
+                   if (this.$.input.value.length < this.minlength) {
+                       classList += ' error';
+                   } else {
+                       classList += ' success';
+                   }
+
+                   return classList;
+               },
+               _generatorSlug: function(str) {
+                   str = str.replace(/^\s+|\s+$/g, '');
+                   str = str.toLowerCase();
+
+                   var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+                   var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+                   for (var i=0, l=from.length ; i<l ; i++) {
+                       str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                   }
+
+                   str = str.replace(/[^a-z0-9 -]/g, '')
+                           .replace(/\s+/g, '-')
+                           .replace(/-+/g, '-');
+
+                   return str;
+               },
+               _checkType: function() {
+                   if (this.type === 'slug' || this.type === 'date' || this.type === 'color') {
+                       this.typeFormat = 'text';
+                   }
+                   else if (this.type === 'tags') {
+                       this.typeFormat = 'hidden';
+                   }
+                   else {
+                       this.typeFormat = this.type;
+                   }
+               },
+               changeValue: function(e, detail) {
+                   this.fire('change', {value: this.value});
+               },
+               tagEvent: function(e) {
+                   if (e.keyCode == 13) {
+                       this.generateTags(e.target.value);
+                        e.target.value = null;
+                        e.preventDefault();
+                        e.stopPropagation();
+                   }
+
+               },
+               generateTags: function(value) {
+                   if (this.tags.indexOf(value) < 0) {
+                       this.push('tags', value);
+                       this.value = this.tags.toString();
+                   }
+
+               },
+               deleteTag: function(e) {
+                   var index = e.model.index;
+                   this.splice('tags',index, 1);
+                   this.value = this.tags.toString();
+
+                   e.preventDefault();
+                   e.stopPropagation();
+               },
+               checkTags: function(value) {
+                   if (value) {
+                      this.tags = value.split(',');
+                   }
+               },
+               tagKeyPressHandler: function(event) {
+                   event.stopPropagation();
+                   return false;
+               },
+               properties: {
+                   name: {
+                       type: String,
+                       notify: true,
+                       reflectToAttribute: true
+                   },
+                   value: {
+                       type: String,
+                       value: '',
+                       notify: true,
+                       reflectToAttribute: true,
+                       observer: 'changeValue'
+                   },
+                   tags: {
+                       type: Array,
+                       value: function() {
+                           return [];
+                       },
+                       notify: true
+                   },
+                   required: {
+                       type: Boolean,
+                       value: false,
+                       reflectToAttribute: true,
+                       notify: true
+                   },
+                   readonly: {
+                       type: Boolean,
+                       value: false,
+                       reflectToAttribute: true,
+                       notify: true
+                   },
+                   disabled: {
+                       type: Boolean,
+                       value: false,
+                       reflectToAttribute: true,
+                       notify: true
+                   },
+                   type: {
+                       type: String,
+                       value: 'text',
+                       notify: true
+                   },
+                   typeFormat: {
+                       type: String,
+                       value: 'text',
+                       notify: true
+                   },
+                   maxlength: {
+                       type: Number
+                   },
+                   maxLengthShow: {
+                       type: Boolean,
+                       notify: true
+                   },
+                   minlength: {
+                       type: Number
+                   },
+                   minLengthShow: {
+                       type: Boolean,
+                       notify: true
+                   },
+                   icon: {
+                       type: String,
+                       value: null
+                   },
+                   buttonIcon: {
+                       type: String,
+                       value: null
+                   },
+                   lang: {
+                       type: String,
+                       value: 'en',
+                       notify: true
+                   },
+                   group: {
+                       type: String,
+                       value: null
+                   },
+                   showColor: {
+                       type: Boolean,
+                       value: false
+                   }
+               }
+           })
+       })();
+   </script>
 
 </dom-module>

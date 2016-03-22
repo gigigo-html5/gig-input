@@ -6,7 +6,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Gig Component fieldMap Demo</title>
-    <link rel="import" href="/demo/gig-input.html">
+    <link rel="import" href="/src/gig-input.html">
 
     <style is="custom-style">
         .field {
@@ -34,7 +34,7 @@
 
     <div class="field">
         <label>Input with date</label>
-        <gig-input type="datetime" class="input" placeholder="Inserta una fecha" maxlength="23" required></gig-input>
+        <gig-input type="datetime" class="input" placeholder="Inserta una fecha" maxlength="23" required button-icon="fa-calendar"></gig-input>
     </div>
 
     <div class="field">
@@ -57,9 +57,26 @@
         <gig-input type="slug" name="slug" class="input" placeholder="Escribe un slug" required></gig-input>
     </div>
 
+    <div class="field">
+        <label>Input domain</label>
+        <gig-input type="domain" name="domain" class="input" placeholder="Escribe un dominio" required></gig-input>
+    </div>
+
+    <div class="field">
+        <label>Input email</label>
+        <gig-input type="email" name="email" class="input" placeholder="Escribe un email" required></gig-input>
+    </div>
+
+    <div class="field">
+        <label>Input tags</label>
+        <gig-input type="tags" name="tags" class="input" placeholder="Escribe una etiqueta" required></gig-input>
+    </div>
 
 
-
+    <div class="field">
+        <label>Input tags with value</label>
+        <gig-input type="tags" name="tags" class="input" placeholder="Escribe una etiqueta" value="Prueba,hola" required></gig-input>
+    </div>
 
 </body>
 
