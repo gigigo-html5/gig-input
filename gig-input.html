@@ -1,11 +1,11 @@
 <!--
  Webcomponents to manage input
- @version v0.0.19 - 2016-02-24
+ @version v0.1.0 - 2016-03-22
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
- -->
 
+ -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="gig-input-date-behavior.html">
@@ -181,7 +181,22 @@
            border-right: 1px solid #e4eaec;
        }
 
-       .field-group span.icon iron-icon {
+       .field-group span.btn-icon {
+           width: 36px;
+           height: 36px;
+           padding: 0;
+           cursor: pointer;
+           border-bottom-left-radius: 0;
+           border-top-left-radius: 0;
+           border-bottom-right-radius: 3px;
+           border-top-right-radius: 3px;
+           border-left: 0;
+           border-color: #46be8a;
+           background: #46be8a;
+           color: white;
+       }
+
+       .field-group span.icon iron-icon, .field-group span.btn-icon iron-icon {
            width: 17px;
        }
 
@@ -242,10 +257,11 @@
            color: #000;
        }
 
+
    </style>
 
    <template>
-       <div class="field-group" class$="[[getClassGroup(icon, group, type)]]">
+       <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]]">
 
            <template is="dom-if" if="[[group]]">
                <span>[[group]]</span>
@@ -273,6 +289,10 @@
 
           <template is="dom-if" if="[[icon]]">
               <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
+          </template>
+
+          <template is="dom-if" if="[[buttonIcon]]">
+              <span class="btn-icon" icon="[[buttonIcon]]" on-click="iconHandler"><iron-icon icon$="[[getClassIcon(buttonIcon)]]"></iron-icon></span>
           </template>
 
           <template is="dom-if" if="[[checkColor(type)]]">
@@ -319,18 +339,11 @@
    <script>
        (function() {
 
-           var self;
-
-           function validateEmail(email) {
-               var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-               return re.test(email);
-           }
-
            Polymer({
                is: 'gig-input',
                behaviors: [
-                   Polymer.GigInputDateBehavior,
-                   Polymer.GigInputColorBehavior,
+                   GigInputDateBehavior,
+                   GigInputColorBehavior,
                    Polymer.IronFormElementBehavior,
                    Polymer.IronValidatableBehavior
                ],
@@ -361,6 +374,9 @@
                        return this.value != '';
                    }
                },
+               iconHandler: function() {
+                   this.$.input.click();
+               },
                focusInput: function() {
                    this.$.input.focus();
                },
@@ -369,10 +385,10 @@
                        this.enableColor();
                    }
                },
-               getClassGroup: function(icon, group, type) {
+               getClassGroup: function(icon, group, type, btnIcon) {
                    var classList = 'field-group';
 
-                   if (icon || type == 'color') {
+                   if (icon || type == 'color' || btnIcon) {
                        classList += ' group-icon';
                    }
 
@@ -400,7 +416,7 @@
                    return classList;
                },
                keyupEvent: function (event) {
-                   self = this;
+                   var self = this;
                    switch(this.type) {
                        case 'slug':
                            self.value = self._generatorSlug(self.$.input.value)
@@ -538,6 +554,7 @@
                        this.generateTags(e.target.value);
                         e.target.value = null;
                         e.preventDefault();
+                        e.stopPropagation();
                    }
 
                },
@@ -554,6 +571,7 @@
                    this.value = this.tags.toString();
 
                    e.preventDefault();
+                   e.stopPropagation();
                },
                checkTags: function(value) {
                    if (value) {
@@ -627,6 +645,10 @@
                        notify: true
                    },
                    icon: {
+                       type: String,
+                       value: null
+                   },
+                   buttonIcon: {
                        type: String,
                        value: null
                    },
