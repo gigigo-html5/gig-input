@@ -264,6 +264,9 @@
            left: 0;
            width: 100%;
            z-index: 1001;
+           text-align: center;
+           padding: 10px;
+           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
        }
 
        .keyboard:after {
@@ -276,19 +279,19 @@
 	    }
 
        .keyboard li {
-           float: left;
+           display: inline-block;
            color: white;
            font-size: 14px;
-           border-right: 1px solid white;
-           padding: 10px 15px;
+           border: 1px solid white;
            cursor: pointer;
+           width: 40px;
+           height: 40px;
+           line-height: 40px;
+           text-align: center;
+           margin: 2px;
+           border-radius: 3px;
        }
 
-       .keyboard li.right {
-           float: right;
-           border-right: 0;
-           border-left: 1px solid white;
-       }
 
        .keyboard li iron-icon {
            height: 16px;
@@ -378,7 +381,7 @@
            <template is="dom-repeat" items="{{keyboardCharts}}">
                <li on-click="keyboardAddKey">{{item}}</li>
            </template>
-                <li on-click="keyboardErase" class="right"><iron-icon icon="fa:caret-square-o-left"></iron-icon></li>
+                <li on-click="keyboardErase" title="Erase" class="right"><iron-icon icon="fa:chevron-left"></iron-icon></li>
        </ul>
        </template>
 
