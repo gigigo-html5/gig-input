@@ -1,21 +1,21 @@
 {
   "name": "gig-input",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Webcomponents to manage input",
-  "main": "gruntfile.js",
+  "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "./node_modules/.bin/gulp release",
-    "postinstall": "./node_modules/.bin/bower install"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "release": "./node_modules/.bin/gulp release",
+      "postinstall": "./node_modules/.bin/bower install"
   },
   "repository": {
-    "type": "git",
-    "url": "https://github.com/gigigo-html5/gig-input.git"
+      "type": "git",
+      "url": "https://github.com/gigigo-html5/gig-input.git"
   },
   "author": "Pedro José Peña Jerez <pedro.jose@gigigo.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gigigo-html5/gig-input/issues"
+      "url": "https://github.com/gigigo-html5/gig-input/issues"
   },
   "devDependencies": {
       "bower": "^1.7.7",

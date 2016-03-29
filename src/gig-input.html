@@ -142,6 +142,10 @@
            border-top-left-radius: 0;
        }
 
+       .keyboard-group input[readonly] {
+           background: white;
+       }
+
        .field-group span {
            display: inline-block;
            background-color: #f3f7f9;
@@ -249,11 +253,56 @@
            color: #000;
        }
 
+       .keyboard {
+           list-style: none;
+           margin: 0;
+           padding: 0;
+           background: #62a8ea;
+           border-color: #62a8ea;
+           border-radius: 3px;
+           position: absolute;
+           left: 0;
+           width: 100%;
+           z-index: 1001;
+       }
+
+       .keyboard:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+	    }
+
+       .keyboard li {
+           float: left;
+           color: white;
+           font-size: 14px;
+           border-right: 1px solid white;
+           padding: 10px 15px;
+           cursor: pointer;
+       }
+
+       .keyboard li.right {
+           float: right;
+           border-right: 0;
+           border-left: 1px solid white;
+       }
+
+       .keyboard li iron-icon {
+           height: 16px;
+       }
+
+       .keyboard li:hover {
+           background: #89bceb;
+       }
+
 
    </style>
 
    <template>
-       <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]]">
+       <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]] {{checkKeyboard(keyboard)}}">
 
            <template is="dom-if" if="[[group]]">
                <span>[[group]]</span>
@@ -324,7 +373,18 @@
            </div>
        </template>
 
+       <template is="dom-if" if="{{keyboard}}">
+       <ul class="keyboard" hidden$={{!keyboardShow}}>
+           <template is="dom-repeat" items="{{keyboardCharts}}">
+               <li on-click="keyboardAddKey">{{item}}</li>
+           </template>
+                <li on-click="keyboardErase" class="right"><iron-icon icon="fa:caret-square-o-left"></iron-icon></li>
+       </ul>
+       </template>
+
        <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
+
+        <iron-overlay-backdrop hidden$="{{!keyboardShow}}" id="overlayKeyboard" on-click="hideKeyboard"></iron-overlay-backdrop>
 
    </template>
 
@@ -427,12 +487,35 @@
                    if (this.type === 'color') {
                        this.showColor = true;
                    }
+
+                   if (this.keyboard) {
+                       this.keyboardShow = true;
+                   }
                },
                blurEvent: function(e) {
                    this.invalid = false;
                    this.maxLengthShow = false;
                    this._getValidity();
                    this.fire('blur');
+
+               },
+               keyboardAddKey: function(e) {
+                   this.$.input.value += e.model.item;
+
+                   e.stopPropagation();
+                   e.preventDefault();
+               },
+               checkKeyboard: function(keyboard) {
+                   if (keyboard) {
+                       return 'keyboard-group';
+                   }
+               },
+               keyboardErase: function() {
+                   this.$.input.value = this.$.input.value.substring(0, this.$.input.value.length - 1);
+
+               },
+               hideKeyboard: function() {
+                   this.keyboardShow = false;
                },
                validateDomain: function(value) {
                    if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)){
@@ -574,6 +657,10 @@
                    event.stopPropagation();
                    return false;
                },
+               addKeyboard: function(value) {
+                   this.keyboardCharts = value.split(',');
+                   this.readonly = true;
+               },
                properties: {
                    name: {
                        type: String,
@@ -656,6 +743,15 @@
                    showColor: {
                        type: Boolean,
                        value: false
+                   },
+                   keyboard: {
+                       type: String,
+                       observer: 'addKeyboard'
+                   },
+                   keyboardShow: {
+                       type: Boolean,
+                       value: false,
+                       notify: true
                    }
                }
            })
