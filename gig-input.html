@@ -1,6 +1,6 @@
 <!--
  Webcomponents to manage input
- @version v0.1.1 - 2016-03-29
+ @version v0.1.2 - 2016-03-30
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -512,6 +512,7 @@
                },
                keyboardAddKey: function(e) {
                    this.$.input.value += e.model.item;
+                   this.value = this.$.input.value;
 
                    e.stopPropagation();
                    e.preventDefault();
@@ -523,6 +524,7 @@
                },
                keyboardErase: function() {
                    this.$.input.value = this.$.input.value.substring(0, this.$.input.value.length - 1);
+                   this.value = this.$.input.value;
 
                },
                hideKeyboard: function() {

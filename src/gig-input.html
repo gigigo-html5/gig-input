@@ -504,6 +504,7 @@
                },
                keyboardAddKey: function(e) {
                    this.$.input.value += e.model.item;
+                   this.value = this.$.input.value;
 
                    e.stopPropagation();
                    e.preventDefault();
@@ -515,6 +516,7 @@
                },
                keyboardErase: function() {
                    this.$.input.value = this.$.input.value.substring(0, this.$.input.value.length - 1);
+                   this.value = this.$.input.value;
 
                },
                hideKeyboard: function() {
