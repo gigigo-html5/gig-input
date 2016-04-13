@@ -1,28 +1,37 @@
 {
   "name": "gig-input",
   "version": "0.1.1",
-  "description": "Webcomponents to manage input",
+  "description": "Gigigo Webcomponent to manage input",
   "main": "gulpfile.js",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "release": "./node_modules/.bin/gulp release",
-      "postinstall": "./node_modules/.bin/bower install"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "./node_modules/.bin/gulp release",
+    "postinstall": "./node_modules/.bin/bower install",
+    "check-bower-deps": "ncu -m bower",
+    "check-npm-deps": "ncu",
+    "update-deps": "ncu -u && ncu -m bower -u",
+    "serve": "ws -p 3001",
+    "release:patch": "npm version patch -m \"chore(release): Bump to %s\"",
+    "release:minor": "npm version minor -m \"chore(release): Bump to %s\"",
+    "release:major": "npm version major -m \"chore(release): Bump to %s\""
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/gigigo-html5/gig-input.git"
+    "type": "git",
+    "url": "https://github.com/gigigo-html5/gig-input.git"
   },
   "author": "Pedro José Peña Jerez <pedro.jose@gigigo.com>",
   "license": "ISC",
   "bugs": {
-      "url": "https://github.com/gigigo-html5/gig-input/issues"
+    "url": "https://github.com/gigigo-html5/gig-input/issues"
   },
   "devDependencies": {
-      "bower": "^1.7.7",
-      "dateformat": "^1.0.12",
-      "gulp": "^3.9.1",
-      "gulp-header": "^1.7.1",
-      "gulp-replace": "^0.5.4"
+    "bower": "^1.7.7",
+    "dateformat": "^1.0.12",
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.7.1",
+    "gulp-replace": "^0.5.4",
+    "local-web-server": "^1.2.1",
+    "npm-check-updates": "^2.6.1"
   },
   "homepage": "https://github.com/gigigo-html5/gig-input"
 }
