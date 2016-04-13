@@ -1,6 +1,6 @@
 <!--
- Webcomponents to manage input
- @version v0.1.1 - 2016-03-29
+ Gigigo Webcomponent to manage input
+ @version v0.1.1 - 2016-04-13
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -15,758 +15,470 @@
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
 
+<link rel="import" href="gig-input-style.html">
+
 <dom-module id="gig-input">
-
-   <style>
-
-       * {
-           box-sizing: border-box;
-           font-family: Roboto,sans-serif;
-       }
-
-       input {
-           display: block;
-           width: 100%;
-           height: 36px;
-           padding: 6px 15px;
-           font-size: 14px;
-           line-height: 1.57142857;
-           font-weight: 300;
-           color: var(--input-color-primary, #76838f);
-           background-color: #fff;
-           background-image: none;
-           border: 1px solid var(--input-border-color, #e4eaec);
-           border-radius: 3px;
-           -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-           box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-           -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-           -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-           @apply(--input-style);
-       }
-       input:focus {
-           border-color: var(--input-border-color-focus, #62a8ea);
-           outline: 0;
-           -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
-           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(98, 168, 234, .6);
-       }
-       input.focus,
-       input:focus {
-           border-color: var(--input-border-color-focus, #62a8ea);
-           -webkit-box-shadow: none;
-           box-shadow: none;
-       }
-       input::-moz-placeholder {
-           color: var(--input-color-placeholder, #a3afb7);
-           opacity: 1;
-       }
-       input:-ms-input-placeholder {
-           color: var(--input-color-placeholder, #a3afb7);
-       }
-       input::-webkit-input-placeholder {
-           color: var(--input-color-placeholder, #a3afb7);
-       }
-       input::-ms-expand {
-           background-color: transparent;
-           border: 0;
-       }
-       input[disabled],
-       input[readonly],
-       fieldset[disabled] .form-control {
-           background-color: var(--input-background-color-disabled, #f3f7f9);
-           opacity: 1;
-       }
-
-       input.error {
-           border-color: var(--input-color-error, #f96868);
-       }
-
-       .error {
-           color: var(--input-color-error, #f96868);
-       }
-
-       div.error {
-           padding: 5px 0;
-       }
-
-       .small {
-           font-size: 85%;
-       }
-
-       .maxlength {
-           float: right;
-           border-radius: 3px;
-           margin: 5px 0;
-           color: white;
-           font-weight: bold;
-           padding: 2px 5px;
-           font-size: 75%;
-           display: block
-       }
-
-       .maxlength.success {
-           background-color: var(--input-color-success, #46BE8A);
-       }
-
-       .maxlength.error {
-           background-color: var(--input-color-error, #f96868);
-           color: white !important;
-       }
-
-       .minlength {
-           float: left;
-           border-radius: 3px;
-           margin: 5px 0;
-           color: white;
-           font-weight: bold;
-           padding: 2px 5px;
-           font-size: 75%;
-           display: block
-       }
-
-       .minlength.success {
-           background-color: var(--input-color-success, #46BE8A);
-       }
-
-       .minlength.error {
-           background-color: var(--input-color-error, #f96868);
-           color: white !important;
-       }
-
-       .field-group {
-           display: -webkit-flex;
-           -webkit-align-items: center;
-           display: flex;
-           align-items: center;
-       }
-
-       .group-icon input {
-           border-bottom-right-radius: 0;
-           border-top-right-radius: 0;
-       }
-
-       .group input {
-           border-bottom-left-radius: 0;
-           border-top-left-radius: 0;
-       }
-
-       .keyboard-group input[readonly] {
-           background: white;
-       }
-
-       .field-group span {
-           display: inline-block;
-           background-color: #f3f7f9;
-           border: 1px solid #e4eaec;
-           border-radius: 3px;
-           white-space: nowrap;
-           vertical-align: middle;
-           color: #76838f;
-           font-size: 14px;
-           float: right;
-           height: 36px;
-           text-align: center;
-           line-height: 34px;
-           border-right: 0;
-           padding: 0 10px;
-           border-bottom-right-radius: 0;
-           border-top-right-radius: 0;
-       }
-
-       .field-group span.icon {
-           width: 36px;
-           height: 36px;
-           padding: 0;
-           border-bottom-left-radius: 0;
-           border-top-left-radius: 0;
-           border-bottom-right-radius: 3px;
-           border-top-right-radius: 3px;
-           border-left: 0;
-           border-right: 1px solid #e4eaec;
-       }
-
-       .field-group span.btn-icon {
-           width: 36px;
-           height: 36px;
-           padding: 0;
-           cursor: pointer;
-           border-bottom-left-radius: 0;
-           border-top-left-radius: 0;
-           border-bottom-right-radius: 3px;
-           border-top-right-radius: 3px;
-           border-left: 0;
-           border-color: #46be8a;
-           background: #46be8a;
-           color: white;
-       }
-
-       .field-group span.icon iron-icon, .field-group span.btn-icon iron-icon {
-           width: 17px;
-       }
-
-       .field-group span.icon i {
-           display: block;
-           width: 16px;
-           height: 16px;
-           margin: 10px;
-           cursor: pointer;
-       }
-
-       iron-overlay-backdrop {
-           z-index: 1000;
-       }
-
-       .tags .tag {
-           display: inline-block;
-           height: 22px;
-           background-color: #f3f7f9;
-           border: 1px solid #e4eaec;
-           border-radius: 3px;
-           vertical-align: top;
-           white-space: nowrap;
-           margin: 10px 5px 5px;
-           padding: 2px 5px 0 5px;
-       }
-
-       .tags .tag:hover {
-           border-color: #89bceb;
-       }
-
-       .tags .tag span {
-           display: inline-block;
-           padding-left: 4px;
-           overflow: hidden;
-           text-overflow: ellipsis;
-           vertical-align: top;
-           font-size: 14px;
-           color: #76838f;
-           font-weight: 300;
-       }
-
-       .tags .tag .close {
-           display: inline-block;
-           float: none;
-           height: 100%;
-           padding-right: 4px;
-           margin-left: 5px;
-           font-family: Arial;
-           font-size: 11px;
-           vertical-align: top;
-           text-decoration: none;
-           color: #76838f;
-           line-height: 17px;
-       }
-
-       .tags .tag .close:hover {
-           color: #000;
-       }
-
-       .keyboard {
-           list-style: none;
-           margin: 0;
-           padding: 0;
-           background: #62a8ea;
-           border-color: #62a8ea;
-           border-radius: 3px;
-           position: absolute;
-           left: 0;
-           width: 100%;
-           z-index: 1001;
-           text-align: center;
-           padding: 10px;
-           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-       }
-
-       .keyboard:after {
-            visibility: hidden;
-            display: block;
-            font-size: 0;
-            content: " ";
-            clear: both;
-            height: 0;
-	    }
-
-       .keyboard li {
-           display: inline-block;
-           color: white;
-           font-size: 14px;
-           border: 1px solid white;
-           cursor: pointer;
-           width: 40px;
-           height: 40px;
-           line-height: 40px;
-           text-align: center;
-           margin: 2px;
-           border-radius: 3px;
-       }
-
-
-       .keyboard li iron-icon {
-           height: 16px;
-       }
-
-       .keyboard li:hover {
-           background: #89bceb;
-       }
-
-
-   </style>
-
-   <template>
-       <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]] {{checkKeyboard(keyboard)}}">
-
-           <template is="dom-if" if="[[group]]">
-               <span>[[group]]</span>
-           </template>
-
-       <input id="input"
-          autocomplete$="[[autocomplete]]"
-          required$="[[required]]"
-          placeholder$="[[placeholder]]"
-          readonly$="[[readonly]]"
-          minlength$="[[minlength]]"
-          maxlength$="[[maxlength]]"
-          min$="[[min]]"
-          max$="[[max]]"
-          disabled$="[[disabled]]"
-          step$="[[step]]"
-          name$="[[name]]"
-          readonly$="[[readonly]]"
-          type="{{typeFormat}}"
-          value="[[value]]"
-          class$="[[getClassList(invalid)]]"
-          on-keyup="keyupEvent"
-          on-focus="focusEvent"
-          on-blur="blurEvent">
-
-          <template is="dom-if" if="[[icon]]">
-              <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
-          </template>
-
-          <template is="dom-if" if="[[buttonIcon]]">
-              <span class="btn-icon" icon="[[buttonIcon]]" on-click="iconHandler"><iron-icon icon$="[[getClassIcon(buttonIcon)]]"></iron-icon></span>
-          </template>
-
-          <template is="dom-if" if="[[checkColor(type)]]">
-              <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
-          </template>
-
-       </div>
-
-       <template is="dom-if" if="[[checkColor(type)]]" on-dom-change="readyTemplate" id="color">
-           <div class="modal-color cp-default" hidden$="{{!showColor}}">
-               <div class="picker"></div>
-               <div class="slide"></div>
-           </div>
-       </template>
-
-       <template is="dom-if" if="[[errorMessage]]">
-           <div class="error small">[[errorMessage]]</div>
-       </template>
-
-       <template is="dom-if" if="{{maxLengthShow}}">
-           <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
-       </template>
-
-       <template is="dom-if" if="{{minLengthShow}}">
-           <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
-       </template>
-
-       <template is="dom-if" if="{{isTags(type)}}">
-           <input type="text" placeholder$="[[placeholder]]" on-keypress="tagEvent">
-           <div class="tags">
-           <template is="dom-repeat" items="{{tags}}">
-               <div class="tag">
-                   <span>{{item}}</span>
-                   <a href="#" class="close" on-click="deleteTag" tabindex="-1">×</a>
-              </div>
-           </template>
-           </div>
-       </template>
-
-       <template is="dom-if" if="{{keyboard}}">
-       <ul class="keyboard" hidden$={{!keyboardShow}}>
-           <template is="dom-repeat" items="{{keyboardCharts}}">
-               <li on-click="keyboardAddKey">{{item}}</li>
-           </template>
-                <li on-click="keyboardErase" title="Erase" class="right"><iron-icon icon="fa:chevron-left"></iron-icon></li>
-       </ul>
-       </template>
-
-       <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
-
-        <iron-overlay-backdrop hidden$="{{!keyboardShow}}" id="overlayKeyboard" on-click="hideKeyboard"></iron-overlay-backdrop>
-
-   </template>
-
-   <script>
-       (function() {
-
-           Polymer({
-               is: 'gig-input',
-               behaviors: [
-                   GigInputDateBehavior,
-                   GigInputColorBehavior,
-                   Polymer.IronFormElementBehavior,
-                   Polymer.IronValidatableBehavior
-               ],
-               listeners: {
-                   'input': '_onInput'
-               },
-               _onInput: function() {
-
-               },
-               ready: function() {
-                   this._checkType();
-                   if (this.type === 'date' || this.type === 'datetime') {
-                       this.enableDate(this.type);
-                   }
-
-                   if (this.type === 'tags') {
-                       this.checkTags(this.value);
-                   }
-               },
-               _getValidity: function() {
-                   if (this.type === 'email') {
-                       return this.validateEmail(this.value);
-                   }
-                   else if (this.type === 'domain') {
-                       return this.validateDomain(this.value);
-                   }
-                   else {
-                       return this.value != '';
-                   }
-               },
-               iconHandler: function() {
-                   this.$.input.click();
-               },
-               focusInput: function() {
-                   this.$.input.focus();
-               },
-               readyTemplate: function() {
-                   if (this.type === 'color') {
-                       this.enableColor();
-                   }
-               },
-               getClassGroup: function(icon, group, type, btnIcon) {
-                   var classList = 'field-group';
-
-                   if (icon || type == 'color' || btnIcon) {
-                       classList += ' group-icon';
-                   }
-
-                   if (group) {
-                       classList += ' group';
-                   }
-
-                   return classList;
-               },
-               checkColor: function(type) {
-                   if (type === 'color') {
-                       return true;
-                   }
-               },
-               getClassIcon: function(icon) {
-                   return 'fa:'+icon.replace('fa-','');
-               },
-               getClassList: function(invalid) {
-                   var classList = '';
-
-                   if (invalid) {
-                       classList += 'error';
-                   }
-
-                   return classList;
-               },
-               keyupEvent: function (event) {
-                   var self = this;
-                   switch(this.type) {
-                       case 'slug':
-                           self.value = self._generatorSlug(self.$.input.value)
-                           break;
-                       default:
-                           self.value = self.$.input.value;
-                       break;
-                   }
-                   this._checkMaxLength();
-                   this._checkMinLength();
-               },
-               focusEvent: function(e) {
-                   this._checkMaxLength();
-                   this._checkMinLength();
-
-                   if (this.type === 'color') {
-                       this.showColor = true;
-                   }
-
-                   if (this.keyboard) {
-                       this.keyboardShow = true;
-                   }
-               },
-               blurEvent: function(e) {
-                   this.invalid = false;
-                   this.maxLengthShow = false;
-                   this._getValidity();
-                   this.fire('blur');
-
-               },
-               keyboardAddKey: function(e) {
-                   this.$.input.value += e.model.item;
-
-                   e.stopPropagation();
-                   e.preventDefault();
-               },
-               checkKeyboard: function(keyboard) {
-                   if (keyboard) {
-                       return 'keyboard-group';
-                   }
-               },
-               keyboardErase: function() {
-                   this.$.input.value = this.$.input.value.substring(0, this.$.input.value.length - 1);
-
-               },
-               hideKeyboard: function() {
-                   this.keyboardShow = false;
-               },
-               validateDomain: function(value) {
-                   if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)){
-                       this.errorMessage = null;
-                       return true;
-                   } else {
-                       this.invalid = true;
-                       this.errorMessage = 'Invalid Domain';
-                       return false;
-                   }
-               },
-               validateEmail: function(value) {
-                   if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
-                       this.errorMessage = null;
-                       return true;
-                   } else {
-                       this.invalid = true;
-                       this.errorMessage = 'Invalid email';
-                       return false;
-                   }
-               },
-               length: function(value) {
-                   return value.length;
-               },
-               isTags: function(type) {
-                   return type === 'tags';
-               },
-               _checkMaxLength: function() {
-
-                   if (this.$.input.value && this.maxlength) {
-                       var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
-
-                       if (percentage > 70) {
-                           this.maxLengthShow = true;
-                       } else {
-                           this.maxLengthShow = false;
-                       }
-                   }
-
-               },
-               _checkMinLength: function() {
-
-                   if (this.$.input.value && this.minlength) {
-
-                       if (this.$.input.value.length < this.minlength + 2) {
-                           this.minLengthShow = true;
-                       } else {
-                           this.minLengthShow = false;
-                       }
-                   }
-
-               },
-               _getMaxLengthClass: function(value, maxlength) {
-
-                   var classList = 'maxlength';
-                   var percentage = ((value.length / maxlength) * 100).toFixed(2);
-
-                   if (percentage < 100) {
-                       classList += ' success';
-                   } else {
-                       classList += ' error';
-                   }
-
-                   return classList;
-
-               },
-               _getMinLengthClass: function(value, minlength) {
-
-                   var classList = 'minlength';
-
-                   if (this.$.input.value.length < this.minlength) {
-                       classList += ' error';
-                   } else {
-                       classList += ' success';
-                   }
-
-                   return classList;
-               },
-               _generatorSlug: function(str) {
-                   str = str.replace(/^\s+|\s+$/g, '');
-                   str = str.toLowerCase();
-
-                   var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-                   var to   = "aaaaaeeeeeiiiiooooouuuunc------";
-                   for (var i=0, l=from.length ; i<l ; i++) {
-                       str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                   }
-
-                   str = str.replace(/[^a-z0-9 -]/g, '')
-                           .replace(/\s+/g, '-')
-                           .replace(/-+/g, '-');
-
-                   return str;
-               },
-               _checkType: function() {
-                   if (this.type === 'slug' || this.type === 'date' || this.type === 'color') {
-                       this.typeFormat = 'text';
-                   }
-                   else if (this.type === 'tags') {
-                       this.typeFormat = 'hidden';
-                   }
-                   else {
-                       this.typeFormat = this.type;
-                   }
-               },
-               changeValue: function(e, detail) {
-                   this.fire('change', {value: this.value});
-               },
-               tagEvent: function(e) {
-                   if (e.keyCode == 13) {
-                       this.generateTags(e.target.value);
+    <template>
+        <style include="gig-input-style"></style>
+
+        <div class="field-group" class$="[[getClassGroup(icon, group, type, buttonIcon)]] {{checkKeyboard(keyboard)}}">
+
+            <template is="dom-if" if="[[group]]">
+                <span>[[group]]</span>
+            </template>
+
+            <input id="input"
+                   autocomplete$="[[autocomplete]]"
+                   required$="[[required]]"
+                   placeholder$="[[placeholder]]"
+                   readonly$="[[readonly]]"
+                   minlength$="[[minlength]]"
+                   maxlength$="[[maxlength]]"
+                   min$="[[min]]"
+                   max$="[[max]]"
+                   disabled$="[[disabled]]"
+                   step$="[[step]]"
+                   name$="[[name]]"
+                   readonly$="[[readonly]]"
+                   type="{{typeFormat}}"
+                   value="[[value]]"
+                   class$="[[getClassList(invalid)]]"
+                   on-keyup="keyupEvent"
+                   on-focus="focusEvent"
+                   on-blur="blurEvent">
+
+            <template is="dom-if" if="[[icon]]">
+                <span class="icon"><iron-icon icon$="[[getClassIcon(icon)]]"></iron-icon></span>
+            </template>
+
+            <template is="dom-if" if="[[buttonIcon]]">
+                <span class="btn-icon" icon="[[buttonIcon]]" on-click="iconHandler"><iron-icon
+                        icon$="[[getClassIcon(buttonIcon)]]"></iron-icon></span>
+            </template>
+
+            <template is="dom-if" if="[[checkColor(type)]]">
+                <span class="icon"><i style$="background-color: [[value]]" on-click="focusInput"></i></span>
+            </template>
+
+        </div>
+
+        <template is="dom-if" if="[[checkColor(type)]]" on-dom-change="readyTemplate" id="color">
+            <div class="modal-color cp-default" hidden$="{{!showColor}}">
+                <div class="picker"></div>
+                <div class="slide"></div>
+            </div>
+        </template>
+
+        <template is="dom-if" if="[[errorMessage]]">
+            <div class="error small">[[errorMessage]]</div>
+        </template>
+
+        <template is="dom-if" if="{{maxLengthShow}}">
+            <span class$="[[_getMaxLengthClass(value, maxlength)]]"><span>{{length(value)}}</span> / <span>{{maxlength}}</span></span>
+        </template>
+
+        <template is="dom-if" if="{{minLengthShow}}">
+            <span class$="[[_getMinLengthClass(value, minlength)]]"><span>{{length(value)}}</span> / <span>{{minlength}}</span></span>
+        </template>
+
+        <template is="dom-if" if="{{isTags(type)}}">
+            <input type="text" placeholder$="[[placeholder]]" on-keypress="tagEvent">
+            <div class="tags">
+                <template is="dom-repeat" items="{{tags}}">
+                    <div class="tag">
+                        <span>{{item}}</span>
+                        <a href="#" class="close" on-click="deleteTag" tabindex="-1">×</a>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template is="dom-if" if="{{keyboard}}">
+            <ul class="keyboard" hidden$={{!keyboardShow}}>
+                <template is="dom-repeat" items="{{keyboardCharts}}">
+                    <li on-click="keyboardAddKey">{{item}}</li>
+                </template>
+                <li on-click="keyboardErase" title="Erase" class="right">
+                    <iron-icon icon="fa:chevron-left"></iron-icon>
+                </li>
+            </ul>
+        </template>
+
+        <iron-overlay-backdrop hidden$="{{!showColor}}" id="overlay" on-click="hideColor"></iron-overlay-backdrop>
+
+        <iron-overlay-backdrop hidden$="{{!keyboardShow}}" id="overlayKeyboard"
+                               on-click="hideKeyboard"></iron-overlay-backdrop>
+
+    </template>
+
+    <script>
+        (function() {
+
+            Polymer({
+                is: 'gig-input',
+                behaviors: [
+                    GigInputDateBehavior,
+                    GigInputColorBehavior,
+                    Polymer.IronFormElementBehavior,
+                    Polymer.IronValidatableBehavior
+                ],
+                listeners: {
+                    'input': '_onInput'
+                },
+                _onInput: function() {
+
+                },
+                ready: function() {
+                    this._checkType();
+                    if (this.type === 'date' || this.type === 'datetime') {
+                        this.enableDate(this.type);
+                    }
+
+                    if (this.type === 'tags') {
+                        this.checkTags(this.value);
+                    }
+                },
+                _getValidity: function() {
+                    if (this.type === 'email') {
+                        return this.validateEmail(this.value);
+                    }
+                    else if (this.type === 'domain') {
+                        return this.validateDomain(this.value);
+                    }
+                    else {
+                        return this.value != '';
+                    }
+                },
+                iconHandler: function() {
+                    this.$.input.click();
+                },
+                focusInput: function() {
+                    this.$.input.focus();
+                },
+                readyTemplate: function() {
+                    if (this.type === 'color') {
+                        this.enableColor();
+                    }
+                },
+                getClassGroup: function(icon, group, type, btnIcon) {
+                    var classList = 'field-group';
+
+                    if (icon || type == 'color' || btnIcon) {
+                        classList += ' group-icon';
+                    }
+
+                    if (group) {
+                        classList += ' group';
+                    }
+
+                    return classList;
+                },
+                checkColor: function(type) {
+                    if (type === 'color') {
+                        return true;
+                    }
+                },
+                getClassIcon: function(icon) {
+                    return 'fa:' + icon.replace('fa-', '');
+                },
+                getClassList: function(invalid) {
+                    var classList = '';
+
+                    if (invalid) {
+                        classList += 'error';
+                    }
+
+                    return classList;
+                },
+                keyupEvent: function(event) {
+                    var self = this;
+                    switch (this.type) {
+                        case 'slug':
+                            self.value = self._generatorSlug(self.$.input.value)
+                            break;
+                        default:
+                            self.value = self.$.input.value;
+                            break;
+                    }
+                    this._checkMaxLength();
+                    this._checkMinLength();
+                },
+                focusEvent: function(e) {
+                    this._checkMaxLength();
+                    this._checkMinLength();
+
+                    if (this.type === 'color') {
+                        this.showColor = true;
+                    }
+
+                    if (this.keyboard) {
+                        this.keyboardShow = true;
+                    }
+                },
+                blurEvent: function(e) {
+                    this.invalid = false;
+                    this.maxLengthShow = false;
+                    this._getValidity();
+                    this.fire('blur');
+
+                },
+                keyboardAddKey: function(e) {
+                    this.$.input.value += e.model.item;
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                },
+                checkKeyboard: function(keyboard) {
+                    if (keyboard) {
+                        return 'keyboard-group';
+                    }
+                },
+                keyboardErase: function() {
+                    this.$.input.value = this.$.input.value.substring(0, this.$.input.value.length - 1);
+
+                },
+                hideKeyboard: function() {
+                    this.keyboardShow = false;
+                },
+                validateDomain: function(value) {
+                    if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)) {
+                        this.errorMessage = null;
+                        return true;
+                    } else {
+                        this.invalid = true;
+                        this.errorMessage = 'Invalid Domain';
+                        return false;
+                    }
+                },
+                validateEmail: function(value) {
+                    if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
+                        this.errorMessage = null;
+                        return true;
+                    } else {
+                        this.invalid = true;
+                        this.errorMessage = 'Invalid email';
+                        return false;
+                    }
+                },
+                length: function(value) {
+                    return value.length;
+                },
+                isTags: function(type) {
+                    return type === 'tags';
+                },
+                _checkMaxLength: function() {
+
+                    if (this.$.input.value && this.maxlength) {
+                        var percentage = ((this.$.input.value.length / this.maxlength) * 100).toFixed(2);
+
+                        if (percentage > 70) {
+                            this.maxLengthShow = true;
+                        } else {
+                            this.maxLengthShow = false;
+                        }
+                    }
+
+                },
+                _checkMinLength: function() {
+
+                    if (this.$.input.value && this.minlength) {
+
+                        if (this.$.input.value.length < this.minlength + 2) {
+                            this.minLengthShow = true;
+                        } else {
+                            this.minLengthShow = false;
+                        }
+                    }
+
+                },
+                _getMaxLengthClass: function(value, maxlength) {
+
+                    var classList = 'maxlength';
+                    var percentage = ((value.length / maxlength) * 100).toFixed(2);
+
+                    if (percentage < 100) {
+                        classList += ' success';
+                    } else {
+                        classList += ' error';
+                    }
+
+                    return classList;
+
+                },
+                _getMinLengthClass: function(value, minlength) {
+
+                    var classList = 'minlength';
+
+                    if (this.$.input.value.length < this.minlength) {
+                        classList += ' error';
+                    } else {
+                        classList += ' success';
+                    }
+
+                    return classList;
+                },
+                _generatorSlug: function(str) {
+                    str = str.replace(/^\s+|\s+$/g, '');
+                    str = str.toLowerCase();
+
+                    var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+                    var to = "aaaaaeeeeeiiiiooooouuuunc------";
+                    for (var i = 0, l = from.length; i < l; i++) {
+                        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                    }
+
+                    str = str.replace(/[^a-z0-9 -]/g, '')
+                            .replace(/\s+/g, '-')
+                            .replace(/-+/g, '-');
+
+                    return str;
+                },
+                _checkType: function() {
+                    if (this.type === 'slug' || this.type === 'date' || this.type === 'color') {
+                        this.typeFormat = 'text';
+                    }
+                    else if (this.type === 'tags') {
+                        this.typeFormat = 'hidden';
+                    }
+                    else {
+                        this.typeFormat = this.type;
+                    }
+                },
+                changeValue: function(e, detail) {
+                    this.fire('change', {value: this.value});
+                },
+                tagEvent: function(e) {
+                    if (e.keyCode == 13) {
+                        this.generateTags(e.target.value);
                         e.target.value = null;
                         e.preventDefault();
                         e.stopPropagation();
-                   }
+                    }
 
-               },
-               generateTags: function(value) {
-                   if (this.tags.indexOf(value) < 0) {
-                       this.push('tags', value);
-                       this.value = this.tags.toString();
-                   }
+                },
+                generateTags: function(value) {
+                    if (this.tags.indexOf(value) < 0) {
+                        this.push('tags', value);
+                        this.value = this.tags.toString();
+                    }
 
-               },
-               deleteTag: function(e) {
-                   var index = e.model.index;
-                   this.splice('tags',index, 1);
-                   this.value = this.tags.toString();
+                },
+                deleteTag: function(e) {
+                    var index = e.model.index;
+                    this.splice('tags', index, 1);
+                    this.value = this.tags.toString();
 
-                   e.preventDefault();
-                   e.stopPropagation();
-               },
-               checkTags: function(value) {
-                   if (value) {
-                      this.tags = value.split(',');
-                   }
-               },
-               tagKeyPressHandler: function(event) {
-                   event.stopPropagation();
-                   return false;
-               },
-               addKeyboard: function(value) {
-                   this.keyboardCharts = value.split(',');
-                   this.readonly = true;
-               },
-               properties: {
-                   name: {
-                       type: String,
-                       notify: true,
-                       reflectToAttribute: true
-                   },
-                   value: {
-                       type: String,
-                       value: '',
-                       notify: true,
-                       reflectToAttribute: true,
-                       observer: 'changeValue'
-                   },
-                   tags: {
-                       type: Array,
-                       value: function() {
-                           return [];
-                       },
-                       notify: true
-                   },
-                   required: {
-                       type: Boolean,
-                       value: false,
-                       reflectToAttribute: true,
-                       notify: true
-                   },
-                   readonly: {
-                       type: Boolean,
-                       value: false,
-                       reflectToAttribute: true,
-                       notify: true
-                   },
-                   disabled: {
-                       type: Boolean,
-                       value: false,
-                       reflectToAttribute: true,
-                       notify: true
-                   },
-                   type: {
-                       type: String,
-                       value: 'text',
-                       notify: true
-                   },
-                   typeFormat: {
-                       type: String,
-                       value: 'text',
-                       notify: true
-                   },
-                   maxlength: {
-                       type: Number
-                   },
-                   maxLengthShow: {
-                       type: Boolean,
-                       notify: true
-                   },
-                   minlength: {
-                       type: Number
-                   },
-                   minLengthShow: {
-                       type: Boolean,
-                       notify: true
-                   },
-                   icon: {
-                       type: String,
-                       value: null
-                   },
-                   buttonIcon: {
-                       type: String,
-                       value: null
-                   },
-                   lang: {
-                       type: String,
-                       value: 'en',
-                       notify: true
-                   },
-                   group: {
-                       type: String,
-                       value: null
-                   },
-                   showColor: {
-                       type: Boolean,
-                       value: false
-                   },
-                   keyboard: {
-                       type: String,
-                       observer: 'addKeyboard'
-                   },
-                   keyboardShow: {
-                       type: Boolean,
-                       value: false,
-                       notify: true
-                   }
-               }
-           })
-       })();
-   </script>
+                    e.preventDefault();
+                    e.stopPropagation();
+                },
+                checkTags: function(value) {
+                    if (value) {
+                        this.tags = value.split(',');
+                    }
+                },
+                tagKeyPressHandler: function(event) {
+                    event.stopPropagation();
+                    return false;
+                },
+                addKeyboard: function(value) {
+                    this.keyboardCharts = value.split(',');
+                    this.readonly = true;
+                },
+                properties: {
+                    name: {
+                        type: String,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    value: {
+                        type: String,
+                        value: '',
+                        notify: true,
+                        reflectToAttribute: true,
+                        observer: 'changeValue'
+                    },
+                    tags: {
+                        type: Array,
+                        value: function() {
+                            return [];
+                        },
+                        notify: true
+                    },
+                    required: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
+                    },
+                    readonly: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
+                    },
+                    disabled: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        notify: true
+                    },
+                    type: {
+                        type: String,
+                        value: 'text',
+                        notify: true
+                    },
+                    typeFormat: {
+                        type: String,
+                        value: 'text',
+                        notify: true
+                    },
+                    maxlength: {
+                        type: Number
+                    },
+                    maxLengthShow: {
+                        type: Boolean,
+                        notify: true
+                    },
+                    minlength: {
+                        type: Number
+                    },
+                    minLengthShow: {
+                        type: Boolean,
+                        notify: true
+                    },
+                    icon: {
+                        type: String,
+                        value: null
+                    },
+                    buttonIcon: {
+                        type: String,
+                        value: null
+                    },
+                    lang: {
+                        type: String,
+                        value: 'en',
+                        notify: true
+                    },
+                    group: {
+                        type: String,
+                        value: null
+                    },
+                    showColor: {
+                        type: Boolean,
+                        value: false
+                    },
+                    keyboard: {
+                        type: String,
+                        observer: 'addKeyboard'
+                    },
+                    keyboardShow: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    }
+                }
+            })
+        })();
+    </script>
 
 </dom-module>
