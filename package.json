@@ -5,13 +5,13 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "npm run lint-polymer",
-    "release": "./node_modules/.bin/gulp release",
-    "postinstall": "./node_modules/.bin/bower install",
+    "release": "gulp release",
+    "postinstall": "bower install",
     "check-bower-deps": "ncu -m bower",
     "check-npm-deps": "ncu",
     "update-deps": "ncu -u && ncu -m bower -u",
     "serve": "ws -p 3001",
-    "lint-polymer": "polylint --root src/ gig-input.html gig-input-color-behavior.html gig-input-date-behavior.html gig-input-style.html",
+    "lint-polymer": "polylint --root src gig-input.html gig-input-color-behavior.html gig-input-date-behavior.html gig-input-style.html",
     "release:patch": "npm version patch -m \"chore(release): Bump to %s\"",
     "release:minor": "npm version minor -m \"chore(release): Bump to %s\"",
     "release:major": "npm version major -m \"chore(release): Bump to %s\""

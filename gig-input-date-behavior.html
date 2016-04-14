@@ -1,6 +1,6 @@
 <!--
  Gigigo Webcomponent to manage input
- @version v0.1.1 - 2016-04-13
+ @version v0.1.1 - 2016-04-14
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -16,13 +16,9 @@
 <script>
     GigInputDateBehavior = {
         enableDate: function() {
-            self = this;
+            var self = this;
 
-            if (this.type == 'datetime') {
-                this.showTime = true;
-            } else {
-                this.showTime = false;
-            }
+            this.showTime = (this.type == 'datetime');
 
             moment.locale(self.lang);
 

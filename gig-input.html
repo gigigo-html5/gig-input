@@ -1,6 +1,6 @@
 <!--
  Gigigo Webcomponent to manage input
- @version v0.1.1 - 2016-04-13
+ @version v0.1.1 - 2016-04-14
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -389,6 +389,26 @@
                         type: String,
                         notify: true,
                         reflectToAttribute: true
+                    },
+                    autocomplete: {
+                        type: String,
+                        value: 'off'
+                    },
+                    placeholder: {
+                        type: String,
+                        value: ''
+                    },
+                    min: {
+                        type: String
+                    },
+                    max: {
+                        type: String
+                    },
+                    errorMessage: {
+                        type: String
+                    },
+                    step: {
+                        type: String
                     },
                     value: {
                         type: String,
