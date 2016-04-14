@@ -11,6 +11,7 @@
     "check-npm-deps": "ncu",
     "update-deps": "ncu -u && ncu -m bower -u",
     "serve": "ws -p 3001",
+    "lint-polymer": "polylint --root src/ gig-input.html gig-input-color-behavior.html gig-input-date-behavior.html gig-input-style.html",
     "release:patch": "npm version patch -m \"chore(release): Bump to %s\"",
     "release:minor": "npm version minor -m \"chore(release): Bump to %s\"",
     "release:major": "npm version major -m \"chore(release): Bump to %s\""
@@ -31,7 +32,8 @@
     "gulp-header": "^1.7.1",
     "gulp-replace": "^0.5.4",
     "local-web-server": "^1.2.1",
-    "npm-check-updates": "^2.6.1"
+    "npm-check-updates": "^2.6.1",
+    "polylint": "^2.10.1"
   },
   "homepage": "https://github.com/gigigo-html5/gig-input"
 }
