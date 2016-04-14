@@ -4,7 +4,7 @@
   "description": "Gigigo Webcomponent to manage input",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint-polymer",
     "release": "./node_modules/.bin/gulp release",
     "postinstall": "./node_modules/.bin/bower install",
     "check-bower-deps": "ncu -m bower",
