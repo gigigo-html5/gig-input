@@ -2,6 +2,10 @@
 
 [Gigigo](http://www.gigigo.com/app/en/home) Webcomponent to manage input
 
+## TODO
+- Update Dependencies, including Polymer
+- Tests
+
 ## Installation
 
 Download node at [nodejs.org](http://nodejs.org) and install it, if you haven't already.
@@ -17,6 +21,11 @@ We use npm package [local-web-server](https://www.npmjs.com/package/local-web-se
 ```sh
 npm sun serve
 ```
+
+## Develop / Contributions
+
+All code changes must be done inside src/ folder and then run gulp release task to 'create' distribution.
+Distribution files are the ones in the project root folder.
 
 ## Tests
 
@@ -51,7 +60,7 @@ npm run update-deps
 
 - [moment](https://github.com/moment/moment): Parse, validate, manipulate, and display dates
 - [pikaday-time](https://github.com/dbushell/Pikaday): Time support added to pikaday
-- [gig-input](https://github.com/gigigo-html5/gig-input): Webcomponent for manage custom imput
+- [gig-icon](https://github.com/gigigo-html5/gig-input): Webcomponent for manage custom imput
 - [iron-form-element-behavior]()
 - [iron-overlay-behavior]()
 - [iron-validatable-behavior]()
