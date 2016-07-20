@@ -4,4 +4,3 @@ node_js:
   - '4'
 before_script:
   - npm install -g bower polylint web-component-tester
-  - bower install
