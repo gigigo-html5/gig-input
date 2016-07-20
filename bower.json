@@ -28,6 +28,6 @@
     "webcomponentsjs": "^0.7.22"
   },
   "resolutions": {
-    "polymer": "^1.5.0"
+    "polymer": "^1.6.0"
   }
 }
