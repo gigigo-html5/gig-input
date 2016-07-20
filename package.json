@@ -1,6 +1,6 @@
 {
   "name": "gig-input",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Gigigo Webcomponent to manage input",
   "main": "gulpfile.js",
   "scripts": {
