@@ -29,10 +29,10 @@
     "bower": "^1.7.7",
     "dateformat": "^1.0.12",
     "gulp": "^3.9.1",
-    "gulp-header": "^1.7.1",
+    "gulp-header": "^1.8.2",
     "gulp-replace": "^0.5.4",
-    "local-web-server": "^1.2.1",
-    "npm-check-updates": "^2.6.1",
+    "local-web-server": "^1.2.6",
+    "npm-check-updates": "^2.6.7",
     "polylint": "^2.10.1"
   },
   "homepage": "https://github.com/gigigo-html5/gig-input"
