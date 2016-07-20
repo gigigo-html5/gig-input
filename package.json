@@ -6,7 +6,6 @@
   "scripts": {
     "test": "npm run lint-polymer",
     "release": "gulp release",
-    "postinstall": "bower install",
     "check-bower-deps": "ncu -m bower",
     "check-npm-deps": "ncu",
     "update-deps": "ncu -u && ncu -m bower -u",
