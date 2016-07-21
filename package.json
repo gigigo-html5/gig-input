@@ -26,7 +26,7 @@
     "url": "https://github.com/gigigo-html5/gig-input/issues"
   },
   "devDependencies": {
-    "bower": "^1.7.7",
+    "bower": "^1.7.9",
     "dateformat": "^1.0.12",
     "gulp": "^3.9.1",
     "gulp-header": "^1.8.7",
