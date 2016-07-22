@@ -1,17 +1,13 @@
-# gig-input 
+# gig-input
 
 [Gigigo](http://www.gigigo.com/app/en/home) Webcomponent to manage input
-
-## TODO
-- Update Dependencies, including Polymer
-- Tests
 
 ## Installation
 
 Download node at [nodejs.org](http://nodejs.org) and install it, if you haven't already.
 
 ```sh
-npm install gig-input --save
+bower install gig-input --save
 ```
 
 ## Run Demo
@@ -79,4 +75,3 @@ npm run update-deps
 ## License
 
 ISC
-

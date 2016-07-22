@@ -1,6 +1,6 @@
 <!--
  Gigigo Webcomponent to manage input
- @version v0.1.1 - 2016-04-14
+ @version v0.2.2 - 2016-07-22
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -14,55 +14,55 @@
 
 
 <script>
-    GigInputDateBehavior = {
-        enableDate: function() {
-            var self = this;
+  GigInputDateBehavior = {
+    enableDate: function() {
+      var self = this;
 
-            this.showTime = (this.type == 'datetime');
+      this.showTime = (this.type == 'datetime');
 
-            moment.locale(self.lang);
+      moment.locale(self.lang);
 
-            this.picker = new Pikaday({
-                showTime: this.showTime,
-                use24hour: true,
-                field: this.$.input,
-                format: this.formatDate,
-                position: 'bottom left',
-                reposition: false,
-                minDate: this.minDate,
-                i18n: {
-                    previousMonth : 'Previous Month',
-                    nextMonth     : 'Next Month',
-                    months        : moment.localeData()._months,
-                    weekdays      : moment.localeData()._weekdays,
-                    weekdaysShort : moment.localeData()._weekdaysShort
-                },
-                onSelect: function (date) {
-                    self.$.input.value = moment(date).format(self.formatDate);
-                },
-                onOpen: function() {
-                    this.pickerShow = true;
-                },
-                onClose: function() {
-                    this.pickerShow = false;
-                }
-            });
-
+      this.picker = new Pikaday({
+        showTime: this.showTime,
+        use24hour: true,
+        field: this.$.input,
+        format: this.formatDate,
+        position: 'bottom left',
+        reposition: false,
+        minDate: this.minDate,
+        i18n: {
+          previousMonth: 'Previous Month',
+          nextMonth: 'Next Month',
+          months: moment.localeData()._months,
+          weekdays: moment.localeData()._weekdays,
+          weekdaysShort: moment.localeData()._weekdaysShort
         },
-        properties: {
-            formatDate: {
-                type: String,
-                notify: true
-            },
-            minDate: {
-                type: Date,
-                value: null
-            },
-            pickerShow: {
-                type: Boolean,
-                value: false
-            }
+        onSelect: function(date) {
+          self.$.input.value = moment(date).format(self.formatDate);
+        },
+        onOpen: function() {
+          this.pickerShow = true;
+        },
+        onClose: function() {
+          this.pickerShow = false;
         }
+      });
 
+    },
+    properties: {
+      formatDate: {
+        type: String,
+        notify: true
+      },
+      minDate: {
+        type: Date,
+        value: null
+      },
+      pickerShow: {
+        type: Boolean,
+        value: false
+      }
     }
+
+  }
 </script>
