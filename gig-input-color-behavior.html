@@ -1,6 +1,6 @@
 <!--
  Gigigo Webcomponent to manage input
- @version v0.2.2 - 2016-07-22
+ @version v0.2.5 - 2016-07-22
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -93,9 +93,11 @@
    * @polymerBehavior GigInputDateBehavior
    */
   GigInputColorBehavior = {
+    listeners: {
+      'click': 'hideColor'
+    },
     enableColor: function() {
       var self = this;
-      console.log('ENABLE COLOR', self.value);
       ColorPicker(
         this.querySelector('.slide'),
         this.querySelector('.picker'),
@@ -103,14 +105,13 @@
           self.value = hex;
         }
       );
-      this.showColor = true;
     },
     /**
      * Does not work
      * @param e
        */
-    hideColor: function(e) {
-      this.showColor = false;
+    hideColor: function() {
+      this.showColor = !this.showColor;
     }
   }
 </script>
