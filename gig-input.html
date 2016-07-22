@@ -1,6 +1,6 @@
 <!--
  Gigigo Webcomponent to manage input
- @version v0.2.2 - 2016-07-22
+ @version v0.2.5 - 2016-07-22
  @link https://github.com/gigigo-html5/gig-input
  @author Pedro José Peña Jerez <pedro.jose@gigigo.com>
  @license MIT License, http://www.opensource.org/licenses/MIT
@@ -125,11 +125,7 @@
           Polymer.IronValidatableBehavior
         ],
         listeners: {
-          'input': '_onInput',
-          'click': 'hideColor'
-        },
-        hideColor: function(e) {
-          this.showColor = !this.showColor;
+          'input': '_onInput'
         },
         _onInput: function() {
 
