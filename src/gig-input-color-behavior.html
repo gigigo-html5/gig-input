@@ -85,9 +85,11 @@
    * @polymerBehavior GigInputDateBehavior
    */
   GigInputColorBehavior = {
+    listeners: {
+      'click': 'hideColor'
+    },
     enableColor: function() {
       var self = this;
-      console.log('ENABLE COLOR', self.value);
       ColorPicker(
         this.querySelector('.slide'),
         this.querySelector('.picker'),
@@ -95,14 +97,13 @@
           self.value = hex;
         }
       );
-      this.showColor = true;
     },
     /**
      * Does not work
      * @param e
        */
-    hideColor: function(e) {
-      this.showColor = false;
+    hideColor: function() {
+      this.showColor = !this.showColor;
     }
   }
 </script>
