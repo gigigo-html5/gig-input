@@ -17,13 +17,14 @@
     "moment": "~2.14.1",
     "pikaday-time": "~1.4.0",
     "gig-icon": "~0.1.1",
-    "iron-overlay-behavior": "^1.8.5",
+    "iron-overlay-behavior": "^1.8.6",
     "iron-validatable-behavior": "^1.1.1",
     "iron-form-element-behavior": "^1.0.6",
-    "polymer": "^1.6.1"
+    "polymer": "^1.6.1",
+    "validator-js": "^5.5.0"
   },
   "devDependencies": {
-    "web-component-tester": "^4.2.2",
+    "web-component-tester": "^4.3.3",
     "iron-test-helpers": "^1.2.5",
     "webcomponentsjs": "^0.7.22"
   }
