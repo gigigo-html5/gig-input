@@ -7,6 +7,8 @@
 <link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
 
+<script src="../bower_components/validator-js/validator.min.js"></script>
+
 <link rel="import" href="gig-input-style.html">
 
 <dom-module id="gig-input">
@@ -235,17 +237,19 @@
           this.keyboardShow = false;
         },
         validateDomain: function(value) {
-          if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)) {
+          //if (/\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b/.test(value)) {
+          if (validator.isFQDN(value)) {
             this.errorMessage = null;
             return true;
           } else {
             this.invalid = true;
-            this.errorMessage = 'Invalid Domain';
+            this.errorMessage = 'Invalid Domain root';
             return false;
           }
         },
         validateEmail: function(value) {
-          if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
+          //if (/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(value)) {
+          if(validator.isEmail(value)) {
             this.errorMessage = null;
             return true;
           } else {

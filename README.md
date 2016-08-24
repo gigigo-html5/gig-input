@@ -43,13 +43,31 @@ npm run check-npm-deps
 2. Check bower dependencies
 
 ```sh
-npm run update-deps
+npm run check-bower-deps
 ```
 
 3. Update all dependecies
 
 ```sh
 npm run update-deps
+```
+
+## Release a new version
+
+- copy everything to package root and change some paths on files
+```
+npm run release
+```
+
+- merge (ONLY) from develop to master
+```
+git merge --no-ff develop
+```
+
+- release (patch, minor or major) package and push changes to repo
+```
+npm run release:[version]
+git push
 ```
 
 ## Dependencies
