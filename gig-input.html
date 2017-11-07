@@ -148,6 +148,9 @@
           }
           else if (this.type === 'domain') {
             return this.validateDomain(this.value);
+
+          }else if (this.type === 'color') {
+            return this.validateColor(this.value);
           }
           else {
             return this.value != '';
@@ -265,6 +268,19 @@
             this.errorMessage = 'Invalid email';
             return false;
           }
+        },
+        validateColor: function(value) {
+          if(value.length > 0) {
+            if(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i.test(value)) {
+              this.errorMessage = null;
+              return true;
+            } else {
+              this.invalid = true;
+              this.errorMessage = 'Invalid color, only hexadecimal colors';
+              return false;
+            }
+          }
+
         },
         length: function(value) {
           return value.length;
